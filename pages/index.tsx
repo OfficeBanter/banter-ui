@@ -33,7 +33,7 @@ export default function AuthPage({ message }) {
         </S.Nav>
         <S.Main>
           <S.Message>{message}</S.Message>
-          <S.AddToSlackLink href={authService.getSlackAddUrl()}>
+          <S.AddToSlackLink href={authService.getSlackSignInUrl()}>
             <S.AddToSlackButton
               alt="Add to Slack"
               height="40"

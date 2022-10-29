@@ -70,18 +70,37 @@ const signinToSlackWorkspace = async (code: string) => {
   return data;
 };
 
-const getUser = () => {
+interface User {
+  email: string;
+  id: string;
+  isAdmin: string;
+  isSuperAdmin: string;
+  name: string;
+  stripeCustomerId: string;
+  teamId: string;
+  workspace: string;
+}
+
+const getUser = (): User => {
   const token = getToken();
   const data = decodeToken(token);
   return data ? data.sub : null;
 };
 
-const getToken = () => {
-  return localStorage.getItem("token") || "";
+const getToken = (): string => {
+  return window?.localStorage?.getItem("token") || "";
+};
+
+const init = () => {
+  const token = getToken();
+  axios.defaults.headers.common = {
+    Authorization: `Bearer ${token}`,
+  };
 };
 
 const setToken = (token: string) => {
-  localStorage.setItem("token", token);
+  window.localStorage.setItem("token", token);
+  init();
 };
 
 export default {
@@ -92,4 +111,5 @@ export default {
   getUser,
   getToken,
   setToken,
+  init,
 };

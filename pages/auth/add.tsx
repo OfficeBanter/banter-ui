@@ -14,8 +14,12 @@ export default function SigninRedirect() {
       console.log(router.query);
       const code = router.query.code;
       const { data } = await authService.addSlackWorkspace(code);
-      setMessage(data.error);
+      if (data.error) {
+        setMessage(data.error);
+        return;
+      }
       segmentService.trackSignUp();
+      router.push("/dashboard");
     };
     setAuth();
   }, [router.query.code]);

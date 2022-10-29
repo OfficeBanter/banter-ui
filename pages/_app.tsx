@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./globalStyles.css";
 import type { AppProps } from "next/app";
 import Script from "next/script";
 import * as snippet from "@segment/snippet";
+import authService from "../services/auth.service";
+import Router, { useRouter } from "next/router";
 
 function App({ Component, pageProps }: AppProps) {
   const loadSegment = () => {
@@ -15,6 +17,15 @@ function App({ Component, pageProps }: AppProps) {
       return snippet.min(options);
     }
   };
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  useEffect(() => {
+    if (!authService.getUser()) {
+      router.push("/");
+    }
+    authService.init();
+    setLoading(false);
+  }, []);
 
   return (
     <>
@@ -22,7 +33,7 @@ function App({ Component, pageProps }: AppProps) {
         dangerouslySetInnerHTML={{ __html: loadSegment() }}
         id="segmentScript"
       />
-      <Component {...pageProps} />
+      {!loading && <Component {...pageProps} />}
     </>
   );
 }
