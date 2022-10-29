@@ -1,7 +1,30 @@
 import React from "react";
 import "./globalStyles.css";
+import type { AppProps } from "next/app";
+import Script from "next/script";
+import * as snippet from "@segment/snippet";
 
-// This default export is required in a new `pages/_app.js` file.
-export default function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+function App({ Component, pageProps }: AppProps) {
+  const loadSegment = () => {
+    const options = {
+      apiKey: process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY,
+    };
+    if (process.env.NEXT_PUBLIC_NODE_ENV) {
+      return snippet.max(options);
+    } else {
+      return snippet.min(options);
+    }
+  };
+
+  return (
+    <>
+      <Script
+        dangerouslySetInnerHTML={{ __html: loadSegment() }}
+        id="segmentScript"
+      />
+      <Component {...pageProps} />
+    </>
+  );
 }
+
+export default App;

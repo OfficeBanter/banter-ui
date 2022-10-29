@@ -2,7 +2,9 @@ import Link from "next/link";
 import styled from "styled-components";
 import { whenDesktop } from "../components/Layout/layoutQueries";
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  height: 100vh;
+`;
 
 export const Nav = styled.nav`
   background: rgba(241, 225, 228, 0.4) !important;
@@ -36,7 +38,13 @@ export const Logo = styled.img`
   `}
 `;
 
-export const Main = styled.main``;
+export const Main = styled.main`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
 
 export const Message = styled.p`
   font-size: 16px;

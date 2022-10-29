@@ -43,37 +43,45 @@ const getSlackAddUrl = () => {
 };
 
 const addSlackWorkspace = async (code: string) => {
-  const data: any = await axios.post(
+  const { data } = await axios.post(
     `${process.env.NEXT_PUBLIC_API_URL}/slack/add`,
     { code }
   );
   if (data.status) {
-    const user = {
-      token: data.token,
-      team: data.team,
-    };
-    // this.setAuth(user);
+    setToken(data.token);
+    // this.segmentService.identifyUser();
+  }
+  console.log(data);
+
+  return data;
+};
+
+const signinToSlackWorkspace = async (code: string) => {
+  const { data } = await axios.post(
+    `${process.env.NEXT_PUBLIC_API_URL}/slack/signin`,
+    { code }
+  );
+
+  if (data.status) {
+    setToken(data.token);
     // this.segmentService.identifyUser();
   }
 
   return data;
 };
 
-const signinToSlackWorkspace = async (code: string) => {
-  const data: any = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URL}/slack/signin`,
-    { code }
-  );
-  if (data.status) {
-    const user = {
-      token: data.token,
-      team: data.team,
-    };
-    // this.setAuth(user);
-    // this.segmentService.identifyUser();
-  }
+const getUser = () => {
+  const token = getToken();
+  const data = decodeToken(token);
+  return data ? data.sub : null;
+};
 
-  return data;
+const getToken = () => {
+  return localStorage.getItem("token") || "";
+};
+
+const setToken = (token: string) => {
+  localStorage.setItem("token", token);
 };
 
 export default {
@@ -81,4 +89,7 @@ export default {
   addSlackWorkspace,
   signinToSlackWorkspace,
   getSlackAddUrl,
+  getUser,
+  getToken,
+  setToken,
 };
