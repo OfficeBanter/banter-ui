@@ -3,22 +3,11 @@ import Head from "next/head";
 import * as S from "./style";
 import settingService from "../../../services/setting.service";
 
-export default function ChannelSelectContainer({}) {
-  const [channels, setChannels] = useState(null);
-  useEffect(() => {
-    const getChannels = async () => {
-      const channels = await settingService.getChannels();
-      setChannels(
-        channels.map(({ uniqueId, name, isPrivate }) => ({
-          value: uniqueId,
-          label: `${isPrivate ? "🔒" : "#"}${name}`,
-        }))
-      );
-      console.log(channels);
-    };
-    getChannels();
-  }, []);
-
+export default function ChannelSelectContainer({
+  slackChannel,
+  setSlackChannel,
+  channels,
+}) {
   return (
     <S.Container>
       <S.BotChannelsHeading>
@@ -36,6 +25,14 @@ export default function ChannelSelectContainer({}) {
         isSearchable={true}
         name="channels"
         options={channels || []}
+        value={slackChannel}
+        onChange={(channel) =>
+          setSlackChannel({
+            ...channel,
+            uniqueId: channel.value,
+            name: channel.label,
+          })
+        }
       />
       <S.BotChannelsNotFound>
         Don't see your private channel? Go to the Slack channel you'd like to

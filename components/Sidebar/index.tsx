@@ -19,6 +19,11 @@ export default function Sidebar({}) {
   return (
     <S.Container>
       <S.BotChannelsHeading>Bot Channels</S.BotChannelsHeading>
+      <S.BotChannelsList>
+        {settings?.map((setting) => (
+          <S.BotChannelsListItem>{setting.channel.name}</S.BotChannelsListItem>
+        ))}
+      </S.BotChannelsList>
     </S.Container>
   );
 }

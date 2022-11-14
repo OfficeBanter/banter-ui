@@ -23,6 +23,13 @@ export const Button = styled.button`
     background: #e6d2d6;
   }
 
+  &: disabled {
+    background: #e6d2d6;
+    cursor: not-allowed;
+    color: grey;
+    font-color: grey;
+  }
+
   ${whenDesktop`
     height: 60px;
     font-size: 18px;  

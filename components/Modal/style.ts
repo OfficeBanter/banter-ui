@@ -2,29 +2,24 @@ import Link from "next/link";
 import styled from "styled-components";
 import { whenDesktop } from "../Layout/layoutQueries";
 
-// animated button styled component
-export const Button = styled.button`
-  background: #f1e1e4;
-  border-radius: 4px;
-  border: none;
-  color: #000;
-  cursor: pointer;
-  font-family: "Open Sans", sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  height: 48px;
-  padding: 0 20px;
-  transition: all 0.3s;
+const Overlay = styled.div`
+  z-index: auto;
+  display: ${({ show }) => (show ? "block" : "none")};
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.5);
+  mouse-events: none;
+`;
 
-  &:active {
-    margin-top: 2px;
-  }
-  &:hover {
-    background: #e6d2d6;
-  }
-
-  ${whenDesktop`
-    height: 60px;
-    font-size: 18px;  
-  `}
+const Container = styled.div`
+  position: fixed;
+  background: antiquewhite;
+  width: 33%;
+  height: auto;
+  border-radius: 10px;
+  padding: 0.75rem;
+  color: rgba(0, 0, 139, 0.7);
 `;

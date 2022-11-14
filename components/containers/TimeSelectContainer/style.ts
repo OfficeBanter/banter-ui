@@ -10,14 +10,16 @@ export const Container = styled.div`
   justify-content: center;
 `;
 
-export const Heading = styled.h2`
+export const BotChannelsHeading = styled.h2`
   font-size: 16px;
 `;
 
-export const Description = styled.p``;
+export const BotChannelsDescription = styled.p``;
 
 export const BotChannelsNotFound = styled.p``;
 
-export const SelectDropdown = styled(Select)`
+export const TimeInput = styled.input``;
+
+export const SelectDropdown = styled.select`
   width: 320px;
 `;
