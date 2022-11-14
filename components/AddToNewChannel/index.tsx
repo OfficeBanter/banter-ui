@@ -48,8 +48,8 @@ export default function Onboarding({}) {
     setSetting({ ...setting, tags });
   };
 
-  const setSlackChannel = (slackChannel) => {
-    setSetting({ ...setting, slackChannel });
+  const setSlackChannel = (channel) => {
+    setSetting({ ...setting, channel });
   };
   console.log(setting);
 
@@ -60,7 +60,7 @@ export default function Onboarding({}) {
     }
     if (step > 2) {
       const saveSetting = async () => {
-        const createdSetting = settingService.createSetting(setting);
+        const createdSetting = await settingService.createSetting(setting);
         console.log(setting);
       };
       saveSetting();
@@ -69,7 +69,7 @@ export default function Onboarding({}) {
 
   const isValidStep = () => {
     if (step === 0) {
-      return setting.slackChannel;
+      return setting.channel;
     }
     if (step === 1) {
       return setting.tags.length > 0;
@@ -84,7 +84,7 @@ export default function Onboarding({}) {
       {step <= 0 && (
         <ChannelSelectContainer
           channels={channels}
-          slackChannel={setting.slackChannel}
+          slackChannel={setting.channel}
           setSlackChannel={setSlackChannel}
         />
       )}

@@ -16,6 +16,10 @@ export const BotChannelsHeading = styled.h2`
 
 export const BotChannelsList = styled.ul``;
 
-export const BotChannelsListItem = styled.li``;
+export const BotChannelsListItem = styled.li<{ active: boolean }>`
+  ${({ active }) => active && "background-color: red"};
+`;
+
+export const BotChannelsListItemLink = styled(Link)``;
 
 export const AddBotChannelButton = styled.button``;

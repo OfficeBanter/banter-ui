@@ -35,9 +35,18 @@ const createSetting = async (setting) => {
   return data;
 };
 
+const saveSetting = async (setting) => {
+  const { data } = await axios.put(
+    `${process.env.NEXT_PUBLIC_API_URL}/setting/${setting._id}`,
+    setting
+  );
+  return data;
+};
+
 export default Object.freeze({
   getAllSettingsForWorkspace,
   getChannels,
   getTimezones,
   createSetting,
+  saveSetting,
 });

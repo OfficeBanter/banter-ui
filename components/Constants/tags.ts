@@ -3,13 +3,6 @@ const SHARE_A_PHOTO = "Share a photo";
 const OPINIONS_AND_DEBATES = "Opinions and Debate";
 const BRAIN_TEASERS = "Brain Teasers";
 
-export const DEFAULT_TAGS = [
-  GETTING_TO_KNOW_YOU,
-  SHARE_A_PHOTO,
-  OPINIONS_AND_DEBATES,
-  BRAIN_TEASERS,
-];
-
 const TAGS_SANDBOX = [
   {
     name: GETTING_TO_KNOW_YOU,
@@ -74,3 +67,5 @@ const TAGS_PROD = [
 
 export const TAGS =
   process.env.NODE_ENV === "production" ? TAGS_PROD : TAGS_SANDBOX;
+
+export const DEFAULT_TAGS = TAGS.map((tag) => tag._id);

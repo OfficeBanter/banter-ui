@@ -30,13 +30,14 @@ export default function SetTagsContainer({
         Banter works best when all topics are enabled.
       </S.Description>
       {TAGS.map((tag) => {
+        console.log(tag, tags);
         return (
           <FancyImageCheckbox
             key={tag._id}
             title={tag.name}
             image={tag.img}
-            checked={tags.includes(tag.name)}
-            onChange={(e) => toggleTags(tag.name)}
+            checked={tags.includes(tag._id)}
+            onChange={(e) => toggleTags(tag._id)}
           />
         );
       })}
