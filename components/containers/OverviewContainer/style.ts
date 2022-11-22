@@ -1,6 +1,7 @@
-import styled from "styled-components";
-import Select from "react-select";
 import Link from "next/link";
+import styled from "styled-components";
+import { whenDesktop } from "../../components/Layout/layoutQueries";
+import Select from "react-select";
 
 export const Container = styled.div`
   display: flex;
@@ -21,10 +22,16 @@ export const SelectDropdown = styled(Select)`
   width: 320px;
 `;
 
-export const TabsList = styled.ul``;
-
-export const TabsListItem = styled.li<{ active: boolean }>`
-  ${({ active }) => active && "background-color: red;"}
+export const MessageDate = styled.p<{ bold: boolean }>`
+  ${({ bold }) => (bold ? "font-weight: bold;" : "")}})}
 `;
 
-export const TabsListItemLink = styled(Link)``;
+export const MessageText = styled.p``;
+
+export const HasImage = styled.div``;
+
+export const Topics = styled.p``;
+
+export const EditButton = styled.button``;
+
+export const DeleteButton = styled.button``;

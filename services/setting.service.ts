@@ -43,10 +43,18 @@ const saveSetting = async (setting) => {
   return data;
 };
 
+const getSetting = async (settingId: string) => {
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/setting/${settingId}`
+  );
+  return data;
+};
+
 export default Object.freeze({
   getAllSettingsForWorkspace,
   getChannels,
   getTimezones,
   createSetting,
   saveSetting,
+  getSetting,
 });

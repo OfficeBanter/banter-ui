@@ -5,6 +5,8 @@ import Script from "next/script";
 import * as snippet from "@segment/snippet";
 import authService from "../services/auth.service";
 import Router, { useRouter } from "next/router";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App({ Component, pageProps }: AppProps) {
   const loadSegment = () => {
@@ -33,7 +35,11 @@ function App({ Component, pageProps }: AppProps) {
         dangerouslySetInnerHTML={{ __html: loadSegment() }}
         id="segmentScript"
       />
-      {!loading && <Component {...pageProps} />}
+      {!loading && (
+        <DndProvider backend={HTML5Backend}>
+          <Component {...pageProps} />
+        </DndProvider>
+      )}
     </>
   );
 }

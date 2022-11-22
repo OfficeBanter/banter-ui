@@ -7,6 +7,7 @@ import ChannelSelectContainer from "../containers/ChannelSelectContainer";
 import SetTagsContainer from "../containers/SetTagsContainer";
 import TimeSelectContainer from "../containers/TimeSelectContainer";
 import { useRouter } from "next/router";
+import OverviewContainer from "../containers/OverviewContainer";
 
 export default function EditSetting({ channels, setChannels }) {
   const router = useRouter();
@@ -14,23 +15,27 @@ export default function EditSetting({ channels, setChannels }) {
 
   const [setting, setSetting] = useState(null);
   useEffect(() => {
-    const getSettings = async () => {
-      const settings = await settingService.getAllSettingsForWorkspace();
-      const setting = settings.find((setting) => setting._id === settingId);
-      if (setting) {
-        setSetting({
-          ...setting,
-          channel: {
-            label: setting.channel.name,
-            name: setting.channel.name,
-            uniqueId: setting.channel.uniqueId,
-            value: setting.channel.uniqueId,
-          },
-        });
+    const getSetting = async () => {
+      if (settingId) {
+        const setting = await settingService.getSetting(settingId);
+        console.log(setting);
+        if (setting) {
+          setSetting({
+            ...setting,
+            channel: {
+              label: setting.channel.name,
+              name: setting.channel.name,
+              uniqueId: setting.channel.uniqueId,
+              value: setting.channel.uniqueId,
+            },
+          });
+          setMessages(setting.messages);
+        }
       }
     };
-    getSettings();
+    getSetting();
   }, [settingId]);
+  const [messages, setMessages] = useState(setting?.messages);
 
   const setDay = (day: string) => {
     setSetting({ ...setting, day });
@@ -78,11 +83,12 @@ export default function EditSetting({ channels, setChannels }) {
       step: "trigger",
     },
   ];
+
   return (
     <S.Container>
       <S.TabsList>
         {tabs.map((tab) => (
-          <S.TabsListItem active={step === tab.step}>
+          <S.TabsListItem key={tab.name} active={step === tab.step}>
             <S.TabsListItemLink href={`/setting/${setting._id}/${tab.step}`}>
               {tab.name}
             </S.TabsListItemLink>
@@ -90,7 +96,9 @@ export default function EditSetting({ channels, setChannels }) {
         ))}
       </S.TabsList>
 
-      {step === "overview" && <p>foobar</p>}
+      {step === "overview" && (
+        <OverviewContainer messages={messages} setMessages={setMessages} />
+      )}
       {step === "channel" && (
         <ChannelSelectContainer
           channels={channels}
