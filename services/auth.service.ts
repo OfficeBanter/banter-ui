@@ -51,7 +51,6 @@ const addSlackWorkspace = async (code: string) => {
     setToken(data.token);
     // this.segmentService.identifyUser();
   }
-  console.log(data);
 
   return data;
 };

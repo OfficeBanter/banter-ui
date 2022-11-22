@@ -50,6 +50,19 @@ const getSetting = async (settingId: string) => {
   return data;
 };
 
+const reorderMessages = async (
+  from: number,
+  to: number,
+  settingId: string,
+  messageId: string
+) => {
+  const { data } = await axios.post(
+    `${process.env.NEXT_PUBLIC_API_URL}/setting/${settingId}/reorder-message-schedule/${messageId}`,
+    { from, to }
+  );
+  return data;
+};
+
 export default Object.freeze({
   getAllSettingsForWorkspace,
   getChannels,
@@ -57,4 +70,5 @@ export default Object.freeze({
   createSetting,
   saveSetting,
   getSetting,
+  reorderMessages,
 });

@@ -11,7 +11,6 @@ export default function SigninRedirect() {
   useEffect(() => {
     const setAuth = async () => {
       if (!router.query.code) return;
-      console.log(router.query);
       const code = router.query.code;
       const { data } = await authService.addSlackWorkspace(code);
       if (data.error) {

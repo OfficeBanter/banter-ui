@@ -3,15 +3,14 @@ import Head from "next/head";
 import * as S from "./style";
 import { Message } from "./Message";
 import update from "immutability-helper";
+import settingService from "../../../services/setting.service";
 
 export default function OverviewContainer({
   messages,
   setMessages,
-  setFromTo,
+  messagesDropped,
 }) {
-  console.log(messages);
   const moveMessage = useCallback((dragIndex: number, hoverIndex: number) => {
-    console.log(dragIndex, hoverIndex);
     setMessages((prevCards) =>
       update(prevCards, {
         $splice: [
@@ -22,12 +21,20 @@ export default function OverviewContainer({
     );
   }, []);
 
+  const onDropped = useCallback(messagesDropped, []);
+
   const renderMessage = useCallback((message, index: number) => {
     const scheduledDateRaw = new Date(message.scheduledOn);
     const topics = message.message.tags.map(({ name }) => name).join(", ");
 
     return (
-      <Message index={index} key={message._id} moveMessage={moveMessage}>
+      <Message
+        index={index}
+        key={message._id}
+        id={message._id}
+        moveMessage={moveMessage}
+        onDropped={messagesDropped}
+      >
         <S.MessageDate bold={message.scheduledMessageId}>
           {scheduledDateRaw.toLocaleDateString("en-US", {
             weekday: "short",
@@ -40,7 +47,7 @@ export default function OverviewContainer({
 
         <S.HasImage>{!!message.customFile && "Has Image"}</S.HasImage>
 
-        <S.Topics>topics</S.Topics>
+        <S.Topics>{topics}</S.Topics>
 
         <S.EditButton>Edit</S.EditButton>
 

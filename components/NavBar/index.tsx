@@ -18,8 +18,6 @@ export default function NavBar({}) {
     setUser(authService.getUser());
   }, []);
 
-  console.log(user);
-
   if (!user) return null;
 
   return (

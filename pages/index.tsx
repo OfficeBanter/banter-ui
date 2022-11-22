@@ -2,8 +2,13 @@ import React from "react";
 import Head from "next/head";
 import * as S from "./style";
 import authService from "../services/auth.service";
+import { useRouter } from "next/router";
 
 export default function AuthPage({ message }) {
+  const router = useRouter();
+  if (authService.getUser()) {
+    router.replace("/dashboard");
+  }
   return (
     <>
       <Head>

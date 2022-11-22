@@ -51,7 +51,6 @@ export default function Onboarding({}) {
   const setSlackChannel = (channel) => {
     setSetting({ ...setting, channel });
   };
-  console.log(setting);
 
   const [step, setStep] = useState(0);
   useEffect(() => {
@@ -61,7 +60,6 @@ export default function Onboarding({}) {
     if (step > 2) {
       const saveSetting = async () => {
         const createdSetting = await settingService.createSetting(setting);
-        console.log(setting);
       };
       saveSetting();
     }

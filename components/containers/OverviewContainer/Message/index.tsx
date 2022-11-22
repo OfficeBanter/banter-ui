@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Identifier, XYCoord } from "dnd-core";
 import type { FC } from "react";
 import { useRef } from "react";
@@ -16,6 +17,7 @@ export interface MessageProps {
   children: any;
   index: number;
   moveMessage: (dragIndex: number, hoverIndex: number) => void;
+  onDropped: (dragIndex: number, hoverIndex: number, messageId: string) => void;
 }
 
 interface DragItem {
@@ -29,7 +31,9 @@ export const Message: FC<MessageProps> = ({
   children,
   index,
   moveMessage,
+  onDropped,
 }) => {
+  const [oldIndex, setOldIndex] = useState(index);
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<
     DragItem,
@@ -88,7 +92,19 @@ export const Message: FC<MessageProps> = ({
       // Generally it's better to avoid mutations,
       // but it's good here for the sake of performance
       // to avoid expensive index searches.
+      setOldIndex(item.index);
       item.index = hoverIndex;
+    },
+    drop(item: DragItem) {
+      // Don't replace items with themselves
+      const dragIndex = oldIndex;
+      const hoverIndex = index;
+
+      if (dragIndex === hoverIndex || dragIndex === -1) {
+        return;
+      }
+
+      onDropped(oldIndex, hoverIndex, id);
     },
   });
 

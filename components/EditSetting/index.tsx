@@ -18,7 +18,6 @@ export default function EditSetting({ channels, setChannels }) {
     const getSetting = async () => {
       if (settingId) {
         const setting = await settingService.getSetting(settingId);
-        console.log(setting);
         if (setting) {
           setSetting({
             ...setting,
@@ -36,6 +35,23 @@ export default function EditSetting({ channels, setChannels }) {
     getSetting();
   }, [settingId]);
   const [messages, setMessages] = useState(setting?.messages);
+
+  const messagesDropped = (
+    dragIndex: number,
+    dropIndex: number,
+    messageId: string
+  ) => {
+    const setOrder = async () => {
+      const data = await settingService.reorderMessages(
+        dragIndex,
+        dropIndex,
+        settingId,
+        messageId
+      );
+      setMessages(data.messages);
+    };
+    setOrder();
+  };
 
   const setDay = (day: string) => {
     setSetting({ ...setting, day });
@@ -63,7 +79,6 @@ export default function EditSetting({ channels, setChannels }) {
 
   const saveSetting = async () => {
     const newSetting = await settingService.saveSetting(setting);
-    console.log(newSetting);
   };
   const tabs = [
     {
@@ -97,7 +112,11 @@ export default function EditSetting({ channels, setChannels }) {
       </S.TabsList>
 
       {step === "overview" && (
-        <OverviewContainer messages={messages} setMessages={setMessages} />
+        <OverviewContainer
+          messages={messages}
+          setMessages={setMessages}
+          messagesDropped={messagesDropped}
+        />
       )}
       {step === "channel" && (
         <ChannelSelectContainer
