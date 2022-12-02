@@ -80,8 +80,9 @@ interface User {
   workspace: string;
 }
 
-const getUser = (): User => {
+const getUser = (): User | null => {
   const token = getToken();
+  if (!token) return null;
   const data = decodeToken(token);
   return data ? data.sub : null;
 };
@@ -102,6 +103,10 @@ const setToken = (token: string) => {
   init();
 };
 
+const logoutUser = () => {
+  localStorage.removeItem("token");
+};
+
 export default {
   getSlackSignInUrl,
   addSlackWorkspace,
@@ -111,4 +116,5 @@ export default {
   getToken,
   setToken,
   init,
+  logoutUser,
 };

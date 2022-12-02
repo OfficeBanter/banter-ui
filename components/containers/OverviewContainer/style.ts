@@ -1,6 +1,4 @@
-import Link from "next/link";
 import styled from "styled-components";
-import { whenDesktop } from "../../components/Layout/layoutQueries";
 import Select from "react-select";
 
 export const Container = styled.div`
@@ -35,3 +33,5 @@ export const Topics = styled.p``;
 export const EditButton = styled.button``;
 
 export const DeleteButton = styled.button``;
+
+export const Modal = styled.div``;

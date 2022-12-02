@@ -7,6 +7,10 @@ import authService from "../services/auth.service";
 import Router, { useRouter } from "next/router";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 function App({ Component, pageProps }: AppProps) {
   const loadSegment = () => {

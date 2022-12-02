@@ -8,10 +8,14 @@ import SetTagsContainer from "../containers/SetTagsContainer";
 import TimeSelectContainer from "../containers/TimeSelectContainer";
 import { useRouter } from "next/router";
 import OverviewContainer from "../containers/OverviewContainer";
+import MessageModal from "./MessageModal";
 
 export default function EditSetting({ channels, setChannels }) {
   const router = useRouter();
   const { settingId, step } = router.query;
+
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState(null);
 
   const [setting, setSetting] = useState(null);
   useEffect(() => {
@@ -21,6 +25,7 @@ export default function EditSetting({ channels, setChannels }) {
         if (setting) {
           setSetting({
             ...setting,
+            tags: setting.tags.map((tag) => tag._id),
             channel: {
               label: setting.channel.name,
               name: setting.channel.name,
@@ -80,6 +85,12 @@ export default function EditSetting({ channels, setChannels }) {
   const saveSetting = async () => {
     const newSetting = await settingService.saveSetting(setting);
   };
+
+  const deleteMessage = async (message) => {
+    const data = await settingService.deleteMessage(message._id, setting._id);
+    setMessages(data.messages);
+  };
+
   const tabs = [
     {
       name: "Overview",
@@ -116,6 +127,8 @@ export default function EditSetting({ channels, setChannels }) {
           messages={messages}
           setMessages={setMessages}
           messagesDropped={messagesDropped}
+          deleteMessage={deleteMessage}
+          createMessage={() => setIsMessageModalOpen(true)}
         />
       )}
       {step === "channel" && (
@@ -139,6 +152,11 @@ export default function EditSetting({ channels, setChannels }) {
         />
       )}
       <Button onClick={saveSetting}>Save</Button>
+      <MessageModal
+        open={isMessageModalOpen}
+        message={selectedMessage}
+        setOpen={setIsMessageModalOpen}
+      />
     </S.Container>
   );
 }

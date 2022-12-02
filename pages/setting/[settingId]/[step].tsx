@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import * as S from "./style";
 import authService from "../../../services/auth.service";
 import { useRouter } from "next/router";
-import { redirect } from "next/dist/server/api-utils";
 import NavBar from "../../../components/NavBar";
 import Sidebar from "../../../components/Sidebar";
 import EditSetting from "../../../components/EditSetting";
@@ -40,7 +38,7 @@ export default function AuthPage({ message }) {
         <meta name="description" content="Login for Banter" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <S.Container>
+      <div>
         <NavBar />
         <Sidebar />
         <EditSetting
@@ -48,7 +46,7 @@ export default function AuthPage({ message }) {
           channels={channels}
           setChannels={setChannels}
         />
-      </S.Container>
+      </div>
     </>
   );
 }

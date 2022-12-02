@@ -63,6 +63,13 @@ const reorderMessages = async (
   return data;
 };
 
+const deleteMessage = async (messageId: string, settingId: string) => {
+  const { data } = await axios.delete(
+    `${process.env.NEXT_PUBLIC_API_URL}/setting/${settingId}/delete-message-schedule/${messageId}`
+  );
+  return data;
+};
+
 export default Object.freeze({
   getAllSettingsForWorkspace,
   getChannels,
@@ -71,4 +78,5 @@ export default Object.freeze({
   saveSetting,
   getSetting,
   reorderMessages,
+  deleteMessage,
 });

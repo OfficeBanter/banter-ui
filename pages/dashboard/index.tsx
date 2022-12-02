@@ -8,12 +8,13 @@ import NavBar from "../../components/NavBar";
 import Onboarding from "../../components/AddToNewChannel";
 import Sidebar from "../../components/Sidebar";
 
-export default function AuthPage({ message }) {
+export default function Dashboard() {
   const router = useRouter();
 
   useEffect(() => {
     if (!authService.getUser()) {
       router.replace("/");
+      return;
     }
   }, []);
 
@@ -21,14 +22,16 @@ export default function AuthPage({ message }) {
     <>
       <Head>
         <title>Banter Dashboard</title>
-        <meta name="description" content="Login for Banter" />
+        <meta name="description" content="Banter Application" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <S.Container>
+      <div>
         <NavBar />
-        <Sidebar />
-        <Onboarding style={{ gridArea: "main" }} />
-      </S.Container>
+        <div className="flex">
+          <Sidebar />
+          <Onboarding />
+        </div>
+      </div>
     </>
   );
 }

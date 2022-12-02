@@ -6,6 +6,7 @@ import authService from "./auth.service";
 
 const identifyUser = () => {
   const user = authService.getUser();
+  if (!user) return;
   window?.analytics.identify(user.id, {
     name: user.name,
     email: user.email,
@@ -56,6 +57,8 @@ const identifyUser = () => {
 
 const trackSignIn = () => {
   const user = authService.getUser();
+  if (!user) return;
+
   const data = {
     name: user.name,
     email: user.email,
@@ -66,6 +69,8 @@ const trackSignIn = () => {
 
 const trackSignUp = () => {
   const user = authService.getUser();
+  if (!user) return;
+
   const data = {
     name: user.name,
     email: user.email,
