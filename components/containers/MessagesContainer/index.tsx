@@ -1,9 +1,22 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import { Message } from "./Message";
 import update from "immutability-helper";
 import { Button } from "flowbite-react";
-
-export default function OverviewContainer({
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+export default function MessagesContainer({
   messages,
   setMessages,
   messagesDropped,
@@ -27,13 +40,7 @@ export default function OverviewContainer({
     const topics = message?.message?.tags.map(({ name }) => name);
 
     return (
-      <Message
-        className="max-w-full mb-4"
-        index={index}
-        id={message._id}
-        moveMessage={moveMessage}
-        onDropped={messagesDropped}
-      >
+      <Message className="max-w-full mb-4" id={message._id}>
         <div
           key={message._id}
           className={`
@@ -61,7 +68,9 @@ export default function OverviewContainer({
             </p>
             <div>
               {topics?.map((topic) => (
-                <p className="text-xs">{topic}</p>
+                <p key={topic} className="text-xs">
+                  {topic}
+                </p>
               ))}
             </div>
           </div>
@@ -91,12 +100,46 @@ export default function OverviewContainer({
       </Message>
     );
   }, []);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    console.log();
+
+    if (active.id !== over.id) {
+      const oldIndex = messages.map((i) => i._id).indexOf(active.id);
+      const newIndex = messages.map((i) => i._id).indexOf(over.id);
+      console.log(oldIndex, newIndex);
+      messagesDropped(oldIndex, newIndex, messages[oldIndex]._id);
+    }
+  }
+
   return (
     <div className="max-w-full height-full">
       <Button className="float-right" onClick={createMessage}>
         New Message
       </Button>
-      {messages?.map((message, i) => renderMessage(message, i))}
+
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        {/* items is a list of unique identifiers, if you do not set it to the
+            ids, then you do not get the correct output */}
+        <SortableContext
+          items={messages.map((message) => message._id)}
+          strategy={verticalListSortingStrategy}
+        >
+          {messages?.map((message, i) => renderMessage(message, i))}
+        </SortableContext>
+      </DndContext>
     </div>
   );
 }
