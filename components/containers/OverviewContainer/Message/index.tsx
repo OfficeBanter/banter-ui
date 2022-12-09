@@ -4,20 +4,13 @@ import type { FC } from "react";
 import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
-const style = {
-  border: "1px dashed gray",
-  padding: "0.5rem 1rem",
-  marginBottom: ".5rem",
-  backgroundColor: "white",
-  cursor: "move",
-};
-
 export interface MessageProps {
   id: any;
   children: any;
   index: number;
   moveMessage: (dragIndex: number, hoverIndex: number) => void;
   onDropped: (dragIndex: number, hoverIndex: number, messageId: string) => void;
+  className?: string;
 }
 
 interface DragItem {
@@ -28,6 +21,7 @@ interface DragItem {
 
 export const Message: FC<MessageProps> = ({
   id,
+  className,
   children,
   index,
   moveMessage,
@@ -92,7 +86,6 @@ export const Message: FC<MessageProps> = ({
       // Generally it's better to avoid mutations,
       // but it's good here for the sake of performance
       // to avoid expensive index searches.
-      setOldIndex(item.index);
       item.index = hoverIndex;
     },
     drop(item: DragItem) {
@@ -104,7 +97,7 @@ export const Message: FC<MessageProps> = ({
         return;
       }
 
-      onDropped(oldIndex, hoverIndex, id);
+      onDropped(index, item.index, id);
     },
   });
 
@@ -119,9 +112,15 @@ export const Message: FC<MessageProps> = ({
   });
 
   const opacity = isDragging ? 0 : 1;
+  const cursor = isDragging ? "grabbing" : "grab";
   drag(drop(ref));
   return (
-    <div ref={ref} style={{ ...style, opacity }} data-handler-id={handlerId}>
+    <div
+      className={className}
+      ref={ref}
+      style={{ opacity, cursor }}
+      data-handler-id={handlerId}
+    >
       {children}
     </div>
   );

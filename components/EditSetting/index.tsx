@@ -9,6 +9,8 @@ import TimeSelectContainer from "../containers/TimeSelectContainer";
 import { useRouter } from "next/router";
 import OverviewContainer from "../containers/OverviewContainer";
 import MessageModal from "./MessageModal";
+import { Tabs } from "flowbite-react";
+import Link from "next/link";
 
 export default function EditSetting({ channels, setChannels }) {
   const router = useRouter();
@@ -95,34 +97,7 @@ export default function EditSetting({ channels, setChannels }) {
     {
       name: "Overview",
       step: "overview",
-    },
-    {
-      name: "Change Channel",
-      step: "channel",
-    },
-    {
-      name: "Topics",
-      step: "tags",
-    },
-    {
-      name: "Scheduling",
-      step: "trigger",
-    },
-  ];
-
-  return (
-    <S.Container>
-      <S.TabsList>
-        {tabs.map((tab) => (
-          <S.TabsListItem key={tab.name} active={step === tab.step}>
-            <S.TabsListItemLink href={`/setting/${setting._id}/${tab.step}`}>
-              {tab.name}
-            </S.TabsListItemLink>
-          </S.TabsListItem>
-        ))}
-      </S.TabsList>
-
-      {step === "overview" && (
+      component: (
         <OverviewContainer
           messages={messages}
           setMessages={setMessages}
@@ -130,18 +105,28 @@ export default function EditSetting({ channels, setChannels }) {
           deleteMessage={deleteMessage}
           createMessage={() => setIsMessageModalOpen(true)}
         />
-      )}
-      {step === "channel" && (
+      ),
+    },
+    {
+      name: "Channel",
+      step: "channel",
+      component: (
         <ChannelSelectContainer
           channels={channels}
           slackChannel={setting.channel}
           setSlackChannel={setSlackChannel}
         />
-      )}
-      {step === "tags" && (
-        <SetTagsContainer tags={setting.tags} setTags={setTags} />
-      )}
-      {step === "trigger" && (
+      ),
+    },
+    {
+      name: "Topics",
+      step: "tags",
+      component: <SetTagsContainer tags={setting.tags} setTags={setTags} />,
+    },
+    {
+      name: "Scheduling",
+      step: "trigger",
+      component: (
         <TimeSelectContainer
           timezone={setting.timezone}
           day={setting.day}
@@ -150,13 +135,31 @@ export default function EditSetting({ channels, setChannels }) {
           setTime={setTime}
           setTimezone={setTimezone}
         />
-      )}
+      ),
+    },
+  ];
+
+  return (
+    <div className="w-full">
+      <Tabs.Group aria-label="Full width tabs" style="fullWidth">
+        {tabs.map((tab) => (
+          <Tabs.Item
+            onClick={(e) => e.preventDefault()}
+            className="w-min"
+            title={tab.name}
+            key={tab.step}
+            active={step === tab.step}
+          >
+            {tab.component}
+          </Tabs.Item>
+        ))}
+      </Tabs.Group>
       <Button onClick={saveSetting}>Save</Button>
       <MessageModal
         open={isMessageModalOpen}
         message={selectedMessage}
         setOpen={setIsMessageModalOpen}
       />
-    </S.Container>
+    </div>
   );
 }

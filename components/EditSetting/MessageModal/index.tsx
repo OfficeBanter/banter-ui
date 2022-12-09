@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import * as S from "./style";
 
 export default function MessageModal({
   open,
@@ -18,7 +17,6 @@ export default function MessageModal({
 
   const handleChange = (event) => {
     if (event.target.id === "message-body") {
-      console.log(event.target.value);
       setMessageEdit(event.target.value);
     }
   };
@@ -32,7 +30,7 @@ export default function MessageModal({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <S.Container>
+        <div>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {title}
           </Typography>
@@ -45,7 +43,7 @@ export default function MessageModal({
             rows={4}
             defaultValue="Default Value"
           />
-        </S.Container>
+        </div>
       </Modal>
     </div>
   );

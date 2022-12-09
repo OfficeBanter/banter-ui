@@ -40,12 +40,10 @@ export default function AuthPage({ message }) {
       </Head>
       <div>
         <NavBar />
-        <Sidebar />
-        <EditSetting
-          style={{ gridArea: "main" }}
-          channels={channels}
-          setChannels={setChannels}
-        />
+        <div className="flex">
+          <Sidebar />
+          <EditSetting channels={channels} setChannels={setChannels} />
+        </div>
       </div>
     </>
   );
