@@ -178,6 +178,7 @@ export default function EditSetting({ channels, setChannels }) {
         type: "success",
         message: "Channel deleted",
       });
+      router.push("/dashboard");
     } catch (error) {
       console.error(error);
       addToast({

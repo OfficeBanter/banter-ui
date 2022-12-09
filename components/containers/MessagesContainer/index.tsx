@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import { Message } from "./Message";
-import update from "immutability-helper";
 import { Button } from "flowbite-react";
 import {
   DndContext,
@@ -103,7 +102,6 @@ export default function MessagesContainer({
     if (active.id !== over.id) {
       const oldIndex = messages.map((i) => i._id).indexOf(active.id);
       const newIndex = messages.map((i) => i._id).indexOf(over.id);
-      console.log(oldIndex, newIndex);
       messagesDropped(oldIndex, newIndex, messages[oldIndex]._id);
     }
   }
