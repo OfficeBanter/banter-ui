@@ -11,11 +11,13 @@ import OverviewContainer from "../containers/OverviewContainer";
 import MessageModal from "./MessageModal";
 import { Tabs } from "flowbite-react";
 import { useLoading } from "../Loading";
+import { useToast } from "../Toast";
 
 export default function EditSetting({ channels, setChannels }) {
   const router = useRouter();
   const { settingId, step } = router.query;
   const setLoading = useLoading({ name: "overview" });
+  const { addToast } = useToast();
 
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
@@ -40,7 +42,9 @@ export default function EditSetting({ channels, setChannels }) {
             });
             setMessages(setting.messages);
           }
-        } catch (e) {}
+        } catch (e) {
+          addToast({ type: "error", message: e.message });
+        }
         setLoading(false);
       }
     };
@@ -97,8 +101,22 @@ export default function EditSetting({ channels, setChannels }) {
   const saveSetting = async () => {
     try {
       setLoading(true);
-      const newSetting = await settingService.saveSetting(setting);
-    } catch (error) {}
+      const { setting: newSetting } = await settingService.saveSetting(setting);
+      setSetting({
+        ...newSetting,
+        tags: newSetting.tags,
+        channel: {
+          label: newSetting.channel.name,
+          name: newSetting.channel.name,
+          uniqueId: newSetting.channel.uniqueId,
+          value: newSetting.channel.uniqueId,
+        },
+      });
+      addToast({ type: "success", message: "Setting saved" });
+    } catch (error) {
+      console.error(error);
+      addToast({ type: "error", message: error?.message });
+    }
 
     setLoading(false);
   };
