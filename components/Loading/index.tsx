@@ -18,10 +18,6 @@ export function LoadingProvider({ children }) {
 
   const setLoading = (name: string) => {
     return (value: boolean) => {
-      console.log(loading, name, value, Object.values(loading), {
-        ...loading,
-        [name]: value,
-      });
       setLoadingInternal((prev) => {
         return { ...prev, [name]: value };
       });
@@ -32,7 +28,6 @@ export function LoadingProvider({ children }) {
     isLoading: Object.values(loading).some((value) => value),
     setLoading,
   };
-  console.log("loading state", loading);
   return (
     <LoadingContext.Provider value={value}>{children}</LoadingContext.Provider>
   );
@@ -54,7 +49,7 @@ export default () => {
 
   return (
     <div
-      className={`fixed z-90 
+      className={`fixed z-50 
       w-full h-full top-0 left-0 
       opacity-95 flex justify-center 
       items-center bg-gray-900 duration-700 pointer-events-none

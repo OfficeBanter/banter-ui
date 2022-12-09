@@ -1,44 +1,98 @@
 import * as React from "react";
-import { Modal, Button } from "flowbite-react";
+import { Modal, Button, Label, Textarea, FileInput } from "flowbite-react";
+import { useToast } from "../../Toast";
+import { fileURLToPath } from "url";
+import { validateConfig } from "next/dist/server/config-shared";
+
 export default function MessageModal({
   open,
   message,
   setOpen,
+  saveMessage,
   title = "Create Your Prompt",
 }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const toast = useToast();
 
-  const [messageEdit, setMessageEdit] = React.useState(message);
+  const [messageEdit, setMessageEdit] = React.useState(message || {});
+  const [imageURL, setImageURL] = React.useState(
+    message?.customFile?.location?.href
+  );
 
   const handleChange = (event) => {
-    if (event.target.id === "message-body") {
-      setMessageEdit(event.target.value);
+    if (event.target.id === "message") {
+      setMessageEdit({ ...messageEdit, message: event.target.value });
     }
+    if (event.target.id === "file") {
+      const file = event.target.files[0];
+      // this is 5mb
+      if (file.size > 5000000) {
+        toast.addToast({ type: "error", message: "File is too big!" });
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const { result } = e.target;
+        if (result) {
+          setImageURL(result);
+        }
+      };
+      reader.readAsDataURL(file);
+      setMessageEdit({ ...messageEdit, file });
+    }
+  };
+
+  const validate = () => {
+    if (!messageEdit.message) {
+      return true;
+    }
+    if (messageEdit?.file?.size > 5000000) {
+      return true;
+    }
+    return false;
   };
 
   return (
     <div>
-      <Modal show={open} onClose={handleClose}>
+      <Modal className="z-40" show={open} onClose={handleClose}>
         <Modal.Header>{title}</Modal.Header>
         <Modal.Body>
-          <div className="space-y-6">
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              With less than a month to go before the European Union enacts new
-              consumer privacy laws for its citizens, companies around the world
-              are updating their terms of service agreements to comply.
-            </p>
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              The European Union’s General Data Protection Regulation (G.D.P.R.)
-              goes into effect on May 25 and is meant to ensure a common set of
-              data rights in the European Union. It requires organizations to
-              notify users as soon as possible of high-risk data breaches that
-              could personally affect them.
-            </p>
-          </div>
+          <form className="space-y-6">
+            <div id="textarea">
+              <div className="mb-2 block">
+                <Label htmlFor="message" value="Your message" />
+              </div>
+              <Textarea
+                id="message"
+                placeholder="Leave a comment..."
+                onChange={handleChange}
+                required={true}
+                rows={4}
+              />
+            </div>
+
+            <div id="fileUpload">
+              <div className="mb-2 block">
+                <Label htmlFor="file" value="Upload file" />
+              </div>
+              <FileInput
+                id="file"
+                accept="image/*"
+                helperText="Upload an image for the prompt!"
+                onChange={handleChange}
+              />
+              {imageURL && <img src={imageURL} />}
+            </div>
+          </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => {}}>Save</Button>
+          <Button
+            disabled={validate()}
+            onClick={() => saveMessage(messageEdit)}
+          >
+            Save
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>

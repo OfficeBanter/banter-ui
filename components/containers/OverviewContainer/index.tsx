@@ -26,7 +26,7 @@ export default function OverviewContainer({
 
   const renderMessage = useCallback((message, index: number) => {
     const scheduledDateRaw = new Date(message.scheduledOn);
-    const topics = message.message.tags.map(({ name }) => name);
+    const topics = message?.message?.tags.map(({ name }) => name);
 
     return (
       <Message
@@ -62,7 +62,7 @@ export default function OverviewContainer({
               {message.customMessage}
             </p>
             <div>
-              {topics.map((topic) => (
+              {topics?.map((topic) => (
                 <p className="text-xs">{topic}</p>
               ))}
             </div>
@@ -78,7 +78,7 @@ export default function OverviewContainer({
             hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400
             dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"`}
-              onClick={() => editMessage}
+              onClick={() => editMessage(message)}
             >
               Edit
             </button>

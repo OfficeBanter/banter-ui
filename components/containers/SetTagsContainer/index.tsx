@@ -28,7 +28,7 @@ export default function SetTagsContainer({
       <p>Banter works best when all topics are enabled.</p>
       {TAGS.map((tag) => {
         return (
-          <div className="flex items-center gap-2">
+          <div key={tag._id} className="flex items-center gap-2">
             <Checkbox id={tag.name} onChange={(e) => toggleTags(tag._id)} />
             <Label htmlFor={tag.name}>{tag.name}</Label>
           </div>

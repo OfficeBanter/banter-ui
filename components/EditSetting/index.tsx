@@ -120,10 +120,48 @@ export default function EditSetting({ channels, setChannels }) {
   };
 
   const deleteMessage = async (message) => {
-    const data = await settingService.deleteMessage(message._id, setting._id);
-    setMessages(data.messages);
+    try {
+      setLoading(true);
+      const data = await settingService.deleteMessage(message._id, setting._id);
+      setMessages(data.messages);
+      addToast({
+        type: "success",
+        message: "Message deleted",
+      });
+    } catch (error) {
+      console.error(error);
+      addToast({
+        type: "error",
+        message: error?.message || "Something went wrong!",
+      });
+    }
+    setLoading(false);
   };
 
+  const editMessage = (message) => {
+    setSelectedMessage(message);
+    setIsMessageModalOpen(true);
+  };
+
+  const saveMessage = async (message) => {
+    try {
+      setLoading(true);
+      const data = await settingService.createNewMessage(setting._id, message);
+      setMessages(data.messages);
+      addToast({
+        type: "success",
+        message: "Message saved",
+      });
+      setIsMessageModalOpen(false);
+    } catch (error) {
+      console.error(error);
+      addToast({
+        type: "error",
+        message: error?.message || "Something went wrong!",
+      });
+    }
+    setLoading(false);
+  };
   const tabs = [
     {
       name: "Overview",
@@ -134,6 +172,7 @@ export default function EditSetting({ channels, setChannels }) {
           setMessages={setMessages}
           messagesDropped={messagesDropped}
           deleteMessage={deleteMessage}
+          editMessage={editMessage}
           createMessage={() => setIsMessageModalOpen(true)}
         />
       ),
@@ -186,11 +225,14 @@ export default function EditSetting({ channels, setChannels }) {
         ))}
       </Tabs.Group>
       <Button onClick={saveSetting}>Save</Button>
-      <MessageModal
-        open={isMessageModalOpen}
-        message={selectedMessage}
-        setOpen={setIsMessageModalOpen}
-      />
+      {isMessageModalOpen && (
+        <MessageModal
+          saveMessage={saveMessage}
+          open={isMessageModalOpen}
+          message={selectedMessage}
+          setOpen={setIsMessageModalOpen}
+        />
+      )}
     </div>
   );
 }
