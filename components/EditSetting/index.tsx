@@ -195,7 +195,6 @@ export default function EditSetting({ channels, setChannels }) {
       component: (
         <MessagesContainer
           messages={messages}
-          setMessages={setMessages}
           messagesDropped={messagesDropped}
           deleteMessage={deleteMessage}
           editMessage={editMessage}

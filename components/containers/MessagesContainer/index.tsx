@@ -18,23 +18,11 @@ import {
 } from "@dnd-kit/sortable";
 export default function MessagesContainer({
   messages,
-  setMessages,
   messagesDropped,
   deleteMessage,
   editMessage,
   createMessage,
 }) {
-  const moveMessage = useCallback((dragIndex: number, hoverIndex: number) => {
-    setMessages((prevCards) =>
-      update(prevCards, {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, prevCards[dragIndex]],
-        ],
-      })
-    );
-  }, []);
-
   const renderMessage = useCallback((message, index: number) => {
     const scheduledDateRaw = new Date(message.scheduledOn);
     const topics = message?.message?.tags.map(({ name }) => name);
