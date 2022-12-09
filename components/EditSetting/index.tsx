@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import settingService from "../../services/setting.service";
-import Button from "../Button";
 import ChannelSelectContainer from "../containers/ChannelSelectContainer";
 import SetTagsContainer from "../containers/SetTagsContainer";
 import TimeSelectContainer from "../containers/TimeSelectContainer";
@@ -10,6 +9,7 @@ import MessageModal from "./MessageModal";
 import { Tabs } from "flowbite-react";
 import { useLoading } from "../Loading";
 import { useToast } from "../Toast";
+import { Button } from "flowbite-react";
 
 export default function EditSetting({ channels, setChannels }) {
   const router = useRouter();
@@ -223,17 +223,19 @@ export default function EditSetting({ channels, setChannels }) {
       <Tabs.Group aria-label="Full width tabs" style="fullWidth">
         {tabs.map((tab) => (
           <Tabs.Item
-            className="h-full"
             onClick={(e) => e.preventDefault()}
-            className="w-min"
             title={tab.name}
             key={tab.step}
             active={step === tab.step}
           >
-            <>
+            <div className="h-full p-4">
               {tab.component}
               {tab.step !== "overview" && (
-                <Button onClick={saveSetting}>Save</Button>
+                <>
+                  <div className="w-full pt-4 flex flex-row-reverse">
+                    <Button onClick={saveSetting}>Save</Button>
+                  </div>
+                </>
               )}
               {isMessageModalOpen && (
                 <MessageModal
@@ -243,7 +245,7 @@ export default function EditSetting({ channels, setChannels }) {
                   setOpen={setIsMessageModalOpen}
                 />
               )}
-            </>
+            </div>
           </Tabs.Item>
         ))}
       </Tabs.Group>

@@ -54,27 +54,6 @@ export default function AuthPage({ message }) {
           </Link>
         </div>
       </div>
-
-      {/* <S.Container>
-        <S.Nav>
-          <S.NavList>
-            <S.NavItem>
-              <S.Logo src="/Banter_Logo.svg" />
-            </S.NavItem>
-            <S.NavItem>
-              <S.SlackLogoLink href={authService.getSlackSignInUrl()}>
-
-              </S.SlackLogoLink>
-            </S.NavItem>
-          </S.NavList>
-        </S.Nav>
-        <S.Main>
-          <S.Message>{message}</S.Message>
-          <S.AddToSlackLink >
-
-          </S.AddToSlackLink>
-        </S.Main>
-      </S.Container> */}
     </>
   );
 }

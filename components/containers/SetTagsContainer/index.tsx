@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { TAGS } from "../../Constants/tags.ts";
-import { Checkbox, Label } from "flowbite-react";
+import { Checkbox, Label, Modal } from "flowbite-react";
 
 export default function SetTagsContainer({
   tags,
@@ -9,6 +9,20 @@ export default function SetTagsContainer({
   tags: string[];
   setTags: (tags: string[]) => void;
 }) {
+  const escFunction = useCallback((event) => {
+    if (event.key === "Escape") {
+      setModalState(null);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", escFunction, false);
+
+    return () => {
+      document.removeEventListener("keydown", escFunction, false);
+    };
+  }, []);
+
   const toggleTags = (tag: string) => {
     const newTags = tags.filter((t) => t !== tag);
     if (newTags.length === tags.length) {
@@ -17,23 +31,65 @@ export default function SetTagsContainer({
     setTags(newTags);
   };
 
+  const [modalState, setModalState] = useState(null);
+  const toggleImageModal = (tag) => {
+    setModalState(tag);
+  };
+
   return (
-    <div>
-      <h1>What kinds of Banter do you want?</h1>
-      <p>
+    <div className="flex flex-col space-y-4">
+      <h1 className="text-2xl text-center font-bold">
+        What kinds of Banter do you want?
+      </h1>
+      <p className="text-l text-center ">
         Banter has several kinds of topics to initiate, from fun and light to
         deeper topics to really get to know your teammates. We recommend leaving
         them all on to get a feel for them
       </p>
-      <p>Banter works best when all topics are enabled.</p>
+      <p className="text-m text-center">
+        Banter works best when all topics are enabled.
+      </p>
       {TAGS.map((tag) => {
         return (
-          <div key={tag._id} className="flex items-center gap-2">
-            <Checkbox id={tag.name} onChange={(e) => toggleTags(tag._id)} />
-            <Label htmlFor={tag.name}>{tag.name}</Label>
-          </div>
+          <>
+            <div key={tag._id} className="flex items-center gap-2">
+              <Checkbox
+                id={tag.name}
+                checked={tags.includes(tag._id)}
+                onChange={(e) => toggleTags(tag._id)}
+              />
+              <img className="h-6" alt={tag.description} src={tag.img} />
+              <Label className="text-lg" htmlFor={tag.name}>
+                {tag.name}
+              </Label>
+              <button onClick={() => toggleImageModal(tag)}>
+                (See Example)
+              </button>
+            </div>
+          </>
         );
       })}
+
+      <Modal
+        className="z-40"
+        onClick={() => setModalState(null)}
+        aria-hidden="true"
+        onClose={() => setModalState(null)}
+        closeOnOverlayClick={true}
+        show={!!modalState}
+      >
+        <div className="p-8">
+          <p className="text-l text-center font-bold">
+            {modalState?.description}
+          </p>
+
+          <img
+            className="max-w-full h-auto"
+            alt={modalState?.description}
+            src={modalState?.preview}
+          />
+        </div>
+      </Modal>
     </div>
   );
 }

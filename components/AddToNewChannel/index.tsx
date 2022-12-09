@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import settingService from "../../services/setting.service";
-import Button from "../Button";
+import { Button } from "flowbite-react";
 import ChannelSelectContainer from "../containers/ChannelSelectContainer";
 import SetTagsContainer from "../containers/SetTagsContainer";
 import TimeSelectContainer from "../containers/TimeSelectContainer";

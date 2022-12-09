@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
-import Head from "next/head";
 import { Message } from "./Message";
 import update from "immutability-helper";
-import settingService from "../../../services/setting.service";
 import { Button } from "flowbite-react";
+
 export default function OverviewContainer({
   messages,
   setMessages,
