@@ -4,6 +4,7 @@ import * as S from "./style";
 import authService from "../../services/auth.service";
 import { Navbar, Dropdown } from "flowbite-react";
 import { useRouter } from "next/router";
+import { useToast } from "../Toast";
 
 // encode url parameters to a string
 const encodeParams = (params) => {
@@ -17,8 +18,11 @@ const encodeParams = (params) => {
 export default function NavBar({}) {
   const router = useRouter();
   const [user, setUser] = useState(null);
+  const context = useToast();
+
   useEffect(() => {
     setUser(authService.getUser());
+    context.setBanner({ type: "failure", message: "Welcome to Banter!" });
   }, []);
 
   if (!user) return null;

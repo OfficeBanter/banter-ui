@@ -45,9 +45,9 @@ function App({ Component, pageProps }: AppProps) {
         <DndProvider backend={HTML5Backend}>
           <LoadingProvider>
             <ToastProvider>
+              <Toast />
               <Component {...pageProps} />
               <Loading />
-              <Toast />
             </ToastProvider>
           </LoadingProvider>
         </DndProvider>
