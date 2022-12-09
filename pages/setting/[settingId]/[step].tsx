@@ -38,9 +38,9 @@ export default function AuthPage({ message }) {
         <meta name="description" content="Login for Banter" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
+      <div className="h-screen">
         <NavBar />
-        <div className="flex">
+        <div className="flex h-full">
           <Sidebar />
           <EditSetting channels={channels} setChannels={setChannels} />
         </div>

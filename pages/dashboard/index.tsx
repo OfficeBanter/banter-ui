@@ -5,7 +5,8 @@ import { useRouter } from "next/router";
 import NavBar from "../../components/NavBar";
 import Onboarding from "../../components/AddToNewChannel";
 import Sidebar from "../../components/Sidebar";
-
+import Toast from "../../components/Toast";
+s;
 export default function Dashboard() {
   const router = useRouter();
 
@@ -24,8 +25,9 @@ export default function Dashboard() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
+        <Toast />
         <NavBar />
-        <div className="flex">
+        <div className="flex h-full">
           <Sidebar />
           <Onboarding />
         </div>

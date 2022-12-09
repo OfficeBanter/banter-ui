@@ -3,8 +3,7 @@ import Head from "next/head";
 import { Message } from "./Message";
 import update from "immutability-helper";
 import settingService from "../../../services/setting.service";
-import Button from "../../Button";
-
+import { Button } from "flowbite-react";
 export default function OverviewContainer({
   messages,
   setMessages,
@@ -32,12 +31,12 @@ export default function OverviewContainer({
       <Message
         className="max-w-full mb-4"
         index={index}
-        key={message._id}
         id={message._id}
         moveMessage={moveMessage}
         onDropped={messagesDropped}
       >
         <div
+          key={message._id}
           className={`
         flex flex-col items-center bg-white border rounded-lg shadow-md 
         md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700
@@ -94,8 +93,10 @@ export default function OverviewContainer({
     );
   }, []);
   return (
-    <div className="max-w-full">
-      <Button onClick={createMessage}>New Message</Button>
+    <div className="max-w-full height-full">
+      <Button className="float-right" onClick={createMessage}>
+        New Message
+      </Button>
       {messages?.map((message, i) => renderMessage(message, i))}
     </div>
   );

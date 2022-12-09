@@ -139,14 +139,20 @@ export default function EditSetting({ channels, setChannels }) {
   };
 
   const editMessage = (message) => {
-    setSelectedMessage(message);
+    setSelectedMessage({
+      message: message.customMessage,
+      customFile: message.customFile,
+    });
     setIsMessageModalOpen(true);
   };
 
   const saveMessage = async (message) => {
     try {
       setLoading(true);
-      const data = await settingService.createNewMessage(setting._id, message);
+      const data = message._id
+        ? await settingService.updateMessage(setting._id, message)
+        : await settingService.createNewMessage(setting._id, message);
+
       setMessages(data.messages);
       addToast({
         type: "success",
@@ -173,7 +179,10 @@ export default function EditSetting({ channels, setChannels }) {
           messagesDropped={messagesDropped}
           deleteMessage={deleteMessage}
           editMessage={editMessage}
-          createMessage={() => setIsMessageModalOpen(true)}
+          createMessage={() => {
+            setSelectedMessage(null);
+            setIsMessageModalOpen(true);
+          }}
         />
       ),
     },
@@ -214,25 +223,30 @@ export default function EditSetting({ channels, setChannels }) {
       <Tabs.Group aria-label="Full width tabs" style="fullWidth">
         {tabs.map((tab) => (
           <Tabs.Item
+            className="h-full"
             onClick={(e) => e.preventDefault()}
             className="w-min"
             title={tab.name}
             key={tab.step}
             active={step === tab.step}
           >
-            {tab.component}
+            <>
+              {tab.component}
+              {tab.step !== "overview" && (
+                <Button onClick={saveSetting}>Save</Button>
+              )}
+              {isMessageModalOpen && (
+                <MessageModal
+                  saveMessage={saveMessage}
+                  open={isMessageModalOpen}
+                  message={selectedMessage}
+                  setOpen={setIsMessageModalOpen}
+                />
+              )}
+            </>
           </Tabs.Item>
         ))}
       </Tabs.Group>
-      <Button onClick={saveSetting}>Save</Button>
-      {isMessageModalOpen && (
-        <MessageModal
-          saveMessage={saveMessage}
-          open={isMessageModalOpen}
-          message={selectedMessage}
-          setOpen={setIsMessageModalOpen}
-        />
-      )}
     </div>
   );
 }

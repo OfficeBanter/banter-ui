@@ -89,6 +89,21 @@ const createNewMessage = async (
   return data;
 };
 
+const updateMessage = async (
+  settingId: string,
+  { message, file }: CreateNewMessage
+) => {
+  const formData = new FormData();
+
+  if (file) formData.append("file", file);
+  formData.append("message", message);
+  const { data } = await axios.put(
+    `${process.env.NEXT_PUBLIC_API_URL}/setting/${settingId}/update-message-schedule/${message._id}`,
+    formData
+  );
+  return data;
+};
+
 export default Object.freeze({
   getAllSettingsForWorkspace,
   getChannels,
@@ -99,4 +114,5 @@ export default Object.freeze({
   reorderMessages,
   deleteMessage,
   createNewMessage,
+  updateMessage,
 });

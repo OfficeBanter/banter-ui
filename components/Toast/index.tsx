@@ -62,7 +62,7 @@ export function useToast(): ToastContext {
 
 export default () => {
   const context = useContext(ToastContext);
-
+  console.log("djadjsjdjs");
   return (
     <>
       {context?.banner?.message && (

@@ -27,8 +27,9 @@ export default function Sidebar({}) {
       <div
         id="sidebar"
         className={`
-        h-screen p-4 
+        p-4 
         w-80
+        h-full
         overflow-y-auto bg-sky-100  dark:bg-gray-800
         `}
         tabIndex={-1}

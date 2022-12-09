@@ -1,24 +1,14 @@
 import * as React from "react";
 import { Modal, Button, Label, Textarea, FileInput } from "flowbite-react";
-import { useToast } from "../../Toast";
-import { fileURLToPath } from "url";
-import { validateConfig } from "next/dist/server/config-shared";
 
-export default function MessageModal({
-  open,
-  message,
-  setOpen,
-  saveMessage,
-  title = "Create Your Prompt",
-}) {
+export default function MessageModal({ open, message, setOpen, saveMessage }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const toast = useToast();
 
-  const [messageEdit, setMessageEdit] = React.useState(message || {});
-  const [imageURL, setImageURL] = React.useState(
-    message?.customFile?.location?.href
-  );
+  const [messageEdit, setMessageEdit] = React.useState({ ...message } || {});
+  const [imageURL, setImageURL] = React.useState(message?.customFile?.location);
+
+  const MAX_IMAGE = 5000000;
 
   const handleChange = (event) => {
     if (event.target.id === "message") {
@@ -26,9 +16,13 @@ export default function MessageModal({
     }
     if (event.target.id === "file") {
       const file = event.target.files[0];
+
+      if (!file) {
+        return;
+      }
+      setMessageEdit({ ...messageEdit, file });
       // this is 5mb
-      if (file.size > 5000000) {
-        toast.addToast({ type: "error", message: "File is too big!" });
+      if (file.size > MAX_IMAGE) {
         return;
       }
       const reader = new FileReader();
@@ -45,18 +39,20 @@ export default function MessageModal({
 
   const validate = () => {
     if (!messageEdit.message) {
-      return true;
+      return false;
     }
-    if (messageEdit?.file?.size > 5000000) {
-      return true;
+    if (messageEdit?.file?.size > MAX_IMAGE) {
+      return false;
     }
-    return false;
+    return true;
   };
 
   return (
     <div>
       <Modal className="z-40" show={open} onClose={handleClose}>
-        <Modal.Header>{title}</Modal.Header>
+        <Modal.Header>
+          {message ? "Edit Message" : "Create your message"}
+        </Modal.Header>
         <Modal.Body>
           <form className="space-y-6">
             <div id="textarea">
@@ -65,6 +61,7 @@ export default function MessageModal({
               </div>
               <Textarea
                 id="message"
+                value={messageEdit.message}
                 placeholder="Leave a comment..."
                 onChange={handleChange}
                 required={true}
@@ -77,9 +74,16 @@ export default function MessageModal({
                 <Label htmlFor="file" value="Upload file" />
               </div>
               <FileInput
+                className="pb-8"
                 id="file"
                 accept="image/*"
-                helperText="Upload an image for the prompt!"
+                helperText={
+                  messageEdit?.file?.size > MAX_IMAGE
+                    ? "File is too large"
+                    : !messageEdit.file
+                    ? "Upload an image for the prompt!"
+                    : ""
+                }
                 onChange={handleChange}
               />
               {imageURL && <img src={imageURL} />}
@@ -88,7 +92,7 @@ export default function MessageModal({
         </Modal.Body>
         <Modal.Footer>
           <Button
-            disabled={validate()}
+            disabled={!validate()}
             onClick={() => saveMessage(messageEdit)}
           >
             Save

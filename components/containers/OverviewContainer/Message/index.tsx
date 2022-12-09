@@ -116,6 +116,8 @@ export const Message: FC<MessageProps> = ({
   drag(drop(ref));
   return (
     <div
+      key={id}
+      id={id}
       className={className}
       ref={ref}
       style={{ opacity, cursor }}
