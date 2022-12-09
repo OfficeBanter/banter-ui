@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import FancyImageCheckbox from "../../FancyImageCheckbox";
-import * as S from "./style";
 import { TAGS } from "../../Constants/tags.ts";
+import { Checkbox, Label } from "flowbite-react";
 
 export default function SetTagsContainer({
   tags,
@@ -19,27 +18,22 @@ export default function SetTagsContainer({
   };
 
   return (
-    <S.Container>
-      <S.Heading>What kinds of Banter do you want?</S.Heading>
-      <S.Description>
+    <div>
+      <h1>What kinds of Banter do you want?</h1>
+      <p>
         Banter has several kinds of topics to initiate, from fun and light to
         deeper topics to really get to know your teammates. We recommend leaving
         them all on to get a feel for them
-      </S.Description>
-      <S.Description>
-        Banter works best when all topics are enabled.
-      </S.Description>
+      </p>
+      <p>Banter works best when all topics are enabled.</p>
       {TAGS.map((tag) => {
         return (
-          <FancyImageCheckbox
-            key={tag._id}
-            title={tag.name}
-            image={tag.img}
-            checked={tags.includes(tag._id)}
-            onChange={(e) => toggleTags(tag._id)}
-          />
+          <div className="flex items-center gap-2">
+            <Checkbox id={tag.name} onChange={(e) => toggleTags(tag._id)} />
+            <Label htmlFor={tag.name}>{tag.name}</Label>
+          </div>
         );
       })}
-    </S.Container>
+    </div>
   );
 }

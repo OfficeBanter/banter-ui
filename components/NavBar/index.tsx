@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Head from "next/head";
-import * as S from "./style";
 import authService from "../../services/auth.service";
 import { Navbar, Dropdown } from "flowbite-react";
 import { useRouter } from "next/router";

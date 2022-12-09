@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import Head from "next/head";
-import * as S from "./style";
-import settingService from "../../../services/setting.service";
+import React from "react";
+import Select from "react-select";
 
 export default function ChannelSelectContainer({
   slackChannel,
@@ -9,16 +7,14 @@ export default function ChannelSelectContainer({
   channels,
 }) {
   return (
-    <S.Container>
-      <S.BotChannelsHeading>
-        Pick the channel you want to add Banter
-      </S.BotChannelsHeading>
-      <S.BotChannelsDescription>
+    <div>
+      <h1>Pick the channel you want to add Banter</h1>
+      <p>
         We recommend adding Banter to a channel that is already used for small
         talk and getting to know each other. #random or #general are usually
         good fits.
-      </S.BotChannelsDescription>
-      <S.SelectDropdown
+      </p>
+      <Select
         classNamePrefix="select"
         isLoading={!channels}
         isClearable={false}
@@ -34,10 +30,10 @@ export default function ChannelSelectContainer({
           })
         }
       />
-      <S.BotChannelsNotFound>
+      <p>
         Don't see your private channel? Go to the Slack channel you'd like to
         set up Banter in, type "/invite @BanterBot"
-      </S.BotChannelsNotFound>
-    </S.Container>
+      </p>
+    </div>
   );
 }

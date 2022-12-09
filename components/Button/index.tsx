@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import * as S from "./style";
-import settingService from "../../services/setting.service";
+import React from "react";
 
 export default function Button({ ...props }) {
   return (

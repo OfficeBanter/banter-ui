@@ -78,20 +78,22 @@ export default () => {
           </span>
         </Alert>
       )}
-      {context?.toasts?.map(({ message, type }) => {
-        let Icon = Success;
-        if (type === "success") Icon = Success;
-        if (type === "error") Icon = Error;
-        if (type === "warning") Icon = Warning;
+      <div className="fixed bottom-10 right-5 flex-col">
+        {context?.toasts?.map(({ message, type }) => {
+          let Icon = Success;
+          if (type === "success") Icon = Success;
+          if (type === "error") Icon = Error;
+          if (type === "warning") Icon = Warning;
 
-        return (
-          <ToastFlowbite className="fixed bottom-10 right-6">
-            <Icon />
-            <div className="ml-3 text-sm font-normal">{message}</div>
-            <ToastFlowbite.Toggle />
-          </ToastFlowbite>
-        );
-      })}
+          return (
+            <ToastFlowbite className="mt-3">
+              <Icon />
+              <div className="ml-3 text-sm font-normal">{message}</div>
+              <ToastFlowbite.Toggle />
+            </ToastFlowbite>
+          );
+        })}
+      </div>
     </>
   );
 };

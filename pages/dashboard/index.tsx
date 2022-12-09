@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import Head from "next/head";
-import * as S from "./style";
 import authService from "../../services/auth.service";
 import { useRouter } from "next/router";
-import { redirect } from "next/dist/server/api-utils";
 import NavBar from "../../components/NavBar";
 import Onboarding from "../../components/AddToNewChannel";
 import Sidebar from "../../components/Sidebar";

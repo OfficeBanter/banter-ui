@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useContext } from "react";
-import Head from "next/head";
-import * as S from "./style";
 import settingService from "../../services/setting.service";
 import Button from "../Button";
 import ChannelSelectContainer from "../containers/ChannelSelectContainer";

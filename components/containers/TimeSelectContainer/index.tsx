@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
-import * as S from "./style";
-import settingService from "../../../services/setting.service";
+import React from "react";
 import TIMEZONES, { Timezone } from "../../Constants/timezones";
-import { time } from "console";
 import DAYS from "../../Constants/days";
 
 export default function ChannelSelectContainer({
@@ -28,29 +25,27 @@ export default function ChannelSelectContainer({
   };
 
   return (
-    <S.Container>
-      <S.BotChannelsHeading>
-        When do you want banter to happen?
-      </S.BotChannelsHeading>
-      <S.BotChannelsDescription>
+    <div>
+      <h1>When do you want banter to happen?</h1>
+      <p>
         Choose when you want Banter to fire. We recommend every other day or
         once week.
-      </S.BotChannelsDescription>
-      <S.SelectDropdown value={day} onChange={(e) => setDay(e.target.value)}>
+      </p>
+      <select value={day} onChange={(e) => setDay(e.target.value)}>
         {DAYS.map((day) => (
           <option key={day.key} value={day.key}>
             {day.val}
           </option>
         ))}
-      </S.SelectDropdown>
+      </select>
 
-      <S.TimeInput
+      <input
         type="time"
         value={time}
         onChange={(e) => setTime(e.target.value)}
       />
 
-      <S.SelectDropdown
+      <select
         value={timezone?._id}
         onChange={(e) => setTimezoneFromId(e.target.value)}
       >
@@ -59,7 +54,7 @@ export default function ChannelSelectContainer({
             {timezone.label}
           </option>
         ))}
-      </S.SelectDropdown>
-    </S.Container>
+      </select>
+    </div>
   );
 }

@@ -1,9 +1,5 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-
+import { Modal, Button } from "flowbite-react";
 export default function MessageModal({
   open,
   message,
@@ -23,27 +19,27 @@ export default function MessageModal({
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <div>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {title}
-          </Typography>
-          <TextField
-            value={messageEdit}
-            onChange={handleChange}
-            id="message-body"
-            label="Multiline"
-            multiline
-            rows={4}
-            defaultValue="Default Value"
-          />
-        </div>
+      <Modal show={open} onClose={handleClose}>
+        <Modal.Header>{title}</Modal.Header>
+        <Modal.Body>
+          <div className="space-y-6">
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              With less than a month to go before the European Union enacts new
+              consumer privacy laws for its citizens, companies around the world
+              are updating their terms of service agreements to comply.
+            </p>
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              The European Union’s General Data Protection Regulation (G.D.P.R.)
+              goes into effect on May 25 and is meant to ensure a common set of
+              data rights in the European Union. It requires organizations to
+              notify users as soon as possible of high-risk data breaches that
+              could personally affect them.
+            </p>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => {}}>Save</Button>
+        </Modal.Footer>
       </Modal>
     </div>
   );
