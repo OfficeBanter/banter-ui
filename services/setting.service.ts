@@ -1,5 +1,4 @@
 import axios from "axios";
-import authService from "./auth.service";
 
 /// XXX I think we should setup axios to not use the token automatically
 /// When we use the token automatically it exposes the auth to every endpoint
@@ -104,6 +103,13 @@ const updateMessage = async (
   return data;
 };
 
+const deleteChannel = async (settingId: string) => {
+  const { data } = await axios.delete(
+    `${process.env.NEXT_PUBLIC_API_URL}/setting/${settingId}`
+  );
+  return data;
+};
+
 export default Object.freeze({
   getAllSettingsForWorkspace,
   getChannels,
@@ -115,4 +121,5 @@ export default Object.freeze({
   deleteMessage,
   createNewMessage,
   updateMessage,
+  deleteChannel,
 });

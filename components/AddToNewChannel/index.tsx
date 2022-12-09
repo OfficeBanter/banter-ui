@@ -77,7 +77,7 @@ export default function Onboarding({}) {
   };
 
   return (
-    <S.Container>
+    <div>
       {step <= 0 && (
         <ChannelSelectContainer
           channels={channels}
@@ -106,6 +106,6 @@ export default function Onboarding({}) {
           </Button>
         </>
       )}
-    </S.Container>
+    </div>
   );
 }

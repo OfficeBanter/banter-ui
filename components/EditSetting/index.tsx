@@ -4,7 +4,7 @@ import ChannelSelectContainer from "../containers/ChannelSelectContainer";
 import SetTagsContainer from "../containers/SetTagsContainer";
 import TimeSelectContainer from "../containers/TimeSelectContainer";
 import { useRouter } from "next/router";
-import OverviewContainer from "../containers/OverviewContainer";
+import MessagesContainer from "../containers/MessagesContainer";
 import MessageModal from "./MessageModal";
 import { Tabs } from "flowbite-react";
 import { useLoading } from "../Loading";
@@ -168,12 +168,32 @@ export default function EditSetting({ channels, setChannels }) {
     }
     setLoading(false);
   };
+
+  const deleteChannel = async (channel) => {
+    try {
+      setLoading(true);
+      const data = await settingService.deleteChannel(setting._id);
+      setChannels(data.channels);
+      addToast({
+        type: "success",
+        message: "Channel deleted",
+      });
+    } catch (error) {
+      console.error(error);
+      addToast({
+        type: "error",
+        message: error?.message || "Something went wrong!",
+      });
+    }
+    setLoading(false);
+  };
+
   const tabs = [
     {
       name: "Overview",
       step: "overview",
       component: (
-        <OverviewContainer
+        <MessagesContainer
           messages={messages}
           setMessages={setMessages}
           messagesDropped={messagesDropped}
@@ -192,6 +212,7 @@ export default function EditSetting({ channels, setChannels }) {
       component: (
         <ChannelSelectContainer
           channels={channels}
+          deleteChannel={deleteChannel}
           slackChannel={setting.channel}
           setSlackChannel={setSlackChannel}
         />
