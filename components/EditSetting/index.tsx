@@ -10,11 +10,12 @@ import { useRouter } from "next/router";
 import OverviewContainer from "../containers/OverviewContainer";
 import MessageModal from "./MessageModal";
 import { Tabs } from "flowbite-react";
-import Link from "next/link";
+import { useLoading } from "../Loading";
 
 export default function EditSetting({ channels, setChannels }) {
   const router = useRouter();
   const { settingId, step } = router.query;
+  const setLoading = useLoading({ name: "overview" });
 
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
@@ -23,20 +24,24 @@ export default function EditSetting({ channels, setChannels }) {
   useEffect(() => {
     const getSetting = async () => {
       if (settingId) {
-        const setting = await settingService.getSetting(settingId);
-        if (setting) {
-          setSetting({
-            ...setting,
-            tags: setting.tags.map((tag) => tag._id),
-            channel: {
-              label: setting.channel.name,
-              name: setting.channel.name,
-              uniqueId: setting.channel.uniqueId,
-              value: setting.channel.uniqueId,
-            },
-          });
-          setMessages(setting.messages);
-        }
+        setLoading(true);
+        try {
+          const setting = await settingService.getSetting(settingId);
+          if (setting) {
+            setSetting({
+              ...setting,
+              tags: setting.tags.map((tag) => tag._id),
+              channel: {
+                label: setting.channel.name,
+                name: setting.channel.name,
+                uniqueId: setting.channel.uniqueId,
+                value: setting.channel.uniqueId,
+              },
+            });
+            setMessages(setting.messages);
+          }
+        } catch (e) {}
+        setLoading(false);
       }
     };
     getSetting();
@@ -49,13 +54,18 @@ export default function EditSetting({ channels, setChannels }) {
     messageId: string
   ) => {
     const setOrder = async () => {
-      const data = await settingService.reorderMessages(
-        dragIndex,
-        dropIndex,
-        settingId,
-        messageId
-      );
-      setMessages(data.messages);
+      setLoading(true);
+      try {
+        const data = await settingService.reorderMessages(
+          dragIndex,
+          dropIndex,
+          settingId,
+          messageId
+        );
+        setMessages(data.messages);
+      } catch (error) {}
+
+      setLoading(false);
     };
     setOrder();
   };
@@ -85,7 +95,12 @@ export default function EditSetting({ channels, setChannels }) {
   }
 
   const saveSetting = async () => {
-    const newSetting = await settingService.saveSetting(setting);
+    try {
+      setLoading(true);
+      const newSetting = await settingService.saveSetting(setting);
+    } catch (error) {}
+
+    setLoading(false);
   };
 
   const deleteMessage = async (message) => {

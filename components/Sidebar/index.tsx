@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
-import Head from "next/head";
-import * as S from "./style";
 import settingService from "../../services/setting.service";
 import { useRouter } from "next/router";
-import { type } from "os";
 import Link from "next/link";
+import { useLoading } from "../Loading";
 
 export default function Sidebar({}) {
   const [settings, setSettings] = useState(null);
+
+  const setLoading = useLoading({ name: "sidebar" });
 
   const router = useRouter();
   const { settingId } = router.query;
 
   useEffect(() => {
     const getSettings = async () => {
+      setLoading(true);
       const settings = await settingService.getAllSettingsForWorkspace();
       setSettings(settings);
+      setLoading(false);
     };
     getSettings();
   }, []);

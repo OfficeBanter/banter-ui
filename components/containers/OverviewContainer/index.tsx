@@ -51,13 +51,13 @@ export default function OverviewContainer({
             }`}
           />
           <div className="w-full flex flex-2 flex-col justify-between p-4 leading-normal">
-            <hp className="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
+            <p className="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
               {scheduledDateRaw.toLocaleDateString("en-US", {
                 weekday: "short",
                 month: "short",
                 day: "numeric",
               })}
-            </hp>
+            </p>
             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
               {message.customMessage}
             </p>

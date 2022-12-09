@@ -11,6 +11,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import Loading, { LoadingProvider } from "../components/Loading";
 
 function App({ Component, pageProps }: AppProps) {
   const loadSegment = () => {
@@ -41,7 +42,10 @@ function App({ Component, pageProps }: AppProps) {
       />
       {!loading && (
         <DndProvider backend={HTML5Backend}>
-          <Component {...pageProps} />
+          <LoadingProvider>
+            <Component {...pageProps} />
+            <Loading />
+          </LoadingProvider>
         </DndProvider>
       )}
     </>
