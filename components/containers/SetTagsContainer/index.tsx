@@ -37,7 +37,7 @@ export default function SetTagsContainer({
   };
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col space-y-4 w-[40vw]">
       <h1 className="text-2xl text-center font-bold">
         What kinds of Banter do you want?
       </h1>
@@ -51,8 +51,8 @@ export default function SetTagsContainer({
       </p>
       {TAGS.map((tag) => {
         return (
-          <>
-            <div key={tag._id} className="flex items-center gap-2">
+          <React.Fragment key={tag._id}>
+            <div className="flex items-center gap-2">
               <Checkbox
                 id={tag.name}
                 checked={tags.includes(tag._id)}
@@ -66,7 +66,7 @@ export default function SetTagsContainer({
                 (See Example)
               </button>
             </div>
-          </>
+          </React.Fragment>
         );
       })}
 
@@ -75,7 +75,6 @@ export default function SetTagsContainer({
         onClick={() => setModalState(null)}
         aria-hidden="true"
         onClose={() => setModalState(null)}
-        closeOnOverlayClick={true}
         show={!!modalState}
       >
         <div className="p-8">

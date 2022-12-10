@@ -29,7 +29,8 @@ export default function Sidebar({}) {
         id="sidebar"
         className={`
         p-4 
-        w-80
+        col-span-3 row-span-2
+
         h-full
         overflow-y-auto bg-sky-100  dark:bg-gray-800
         `}
@@ -39,6 +40,7 @@ export default function Sidebar({}) {
         <h2
           id="drawer-label"
           className={`
+          text-2xl
           inline-flex items-center mb-4 text-base 
           font-semibold text-gray-500 dark:text-gray-400`}
         >
@@ -49,16 +51,19 @@ export default function Sidebar({}) {
             {settings?.map((setting) => (
               <li
                 className={`
+                  text-lg
                  text-gray-500 dark:text-gray-400
                 ${
                   settingId === setting._id &&
-                  "text-bold text-gray-900 dark:text-gray-900"
+                  "font-bold text-gray-900 dark:text-gray-900"
                 }
             `}
                 key={setting._id}
               >
                 <Link href={`/setting/${setting._id}/overview`}>
-                  {setting.channel.name}
+                  {`#${setting.channel.name} ${
+                    setting.channel.isPrivate ? "🔒" : ""
+                  }`}
                 </Link>
               </li>
             ))}

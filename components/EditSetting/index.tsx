@@ -140,6 +140,7 @@ export default function EditSetting({ channels, setChannels }) {
 
   const editMessage = (message) => {
     setSelectedMessage({
+      _id: message._id,
       message: message.customMessage,
       customFile: message.customFile,
     });
@@ -240,7 +241,7 @@ export default function EditSetting({ channels, setChannels }) {
   ];
 
   return (
-    <div className="w-full">
+    <div className="col-span-9">
       <Tabs.Group aria-label="Full width tabs" style="fullWidth">
         {tabs.map((tab) => (
           <Tabs.Item
@@ -249,14 +250,12 @@ export default function EditSetting({ channels, setChannels }) {
             key={tab.step}
             active={step === tab.step}
           >
-            <div className="h-full p-4">
+            <div className="h-full p-4 w-min my-0 mx-auto">
               {tab.component}
               {tab.step !== "messages" && (
-                <>
-                  <div className="w-full pt-4 flex flex-row-reverse">
-                    <Button onClick={saveSetting}>Save</Button>
-                  </div>
-                </>
+                <div className="w-full pt-4 flex flex-row-reverse">
+                  <Button onClick={saveSetting}>Save</Button>
+                </div>
               )}
               {isMessageModalOpen && (
                 <MessageModal

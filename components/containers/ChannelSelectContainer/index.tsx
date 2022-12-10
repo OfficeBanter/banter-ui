@@ -21,7 +21,7 @@ export default function ChannelSelectContainer({
     settings?.map((setting) => setting.channel?.uniqueId)
   );
   return (
-    <div className="flex flex-col space-y-4 align-middle justify-center">
+    <div className="flex flex-col space-y-4 align-middle justify-center w-[40vw]">
       <h1 className="text-center text-2xl font-bold">
         Pick the channel you want to add Banter
       </h1>

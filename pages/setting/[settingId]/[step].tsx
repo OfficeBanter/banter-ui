@@ -38,12 +38,13 @@ export default function AuthPage({ message }) {
         <meta name="description" content="Login for Banter" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="h-screen">
+      <div
+        style={{ gridTemplateRows: "80px auto 1fr" }}
+        className="grid grid-cols-12 grid-rows-3 auto-rows-min"
+      >
         <NavBar />
-        <div className="flex h-full">
-          <Sidebar />
-          <EditSetting channels={channels} setChannels={setChannels} />
-        </div>
+        <Sidebar />
+        <EditSetting channels={channels} setChannels={setChannels} />
       </div>
     </>
   );

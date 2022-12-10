@@ -9,7 +9,6 @@ export default function MessageModal({ open, message, setOpen, saveMessage }) {
   const [imageURL, setImageURL] = React.useState(message?.customFile?.location);
 
   const MAX_IMAGE = 5000000;
-
   const handleChange = (event) => {
     if (event.target.id === "message") {
       setMessageEdit({ ...messageEdit, message: event.target.value });

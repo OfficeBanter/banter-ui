@@ -25,7 +25,7 @@ export default function ChannelSelectContainer({
   };
 
   return (
-    <div>
+    <div className="w-[40vw]">
       <h1>When do you want banter to happen?</h1>
       <p>
         Choose when you want Banter to fire. We recommend every other day or

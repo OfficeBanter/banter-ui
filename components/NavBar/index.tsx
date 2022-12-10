@@ -26,7 +26,11 @@ export default function NavBar({}) {
   if (!user) return null;
 
   return (
-    <Navbar className="bg-sky-500 rounded-none" fluid={true} rounded={true}>
+    <Navbar
+      className="bg-sky-500 rounded-none col-span-12 row-span-1"
+      fluid={true}
+      rounded={true}
+    >
       <Navbar.Brand href="/">
         <img
           src="/Banter_Logo.svg"

@@ -16,8 +16,17 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { Modal } from "flowbite-react";
+import {
+  HiOutlineExclamationCircle,
+  HiOutlineClock,
+  HiOutlineCamera,
+  HiPlusCircle,
+  HiOutlineTrash,
+} from "react-icons/hi";
+import { Modal, Badge } from "flowbite-react";
+import { useSettings } from "../../../services/setting.context";
+
+const widths = "w-[30vw]";
 export default function MessagesContainer({
   messages,
   messagesDropped,
@@ -30,62 +39,56 @@ export default function MessagesContainer({
     const topics = message?.message?.tags.map(({ name }) => name);
 
     return (
-      <Message className="max-w-full mb-4" id={message._id}>
+      <Message key={message._id} className="flex flex-1" id={message._id}>
         <div
+          onClick={() => editMessage(message)}
           key={message._id}
           className={`
-        flex flex-col items-center bg-white border rounded-lg shadow-md 
-        md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700
+        flex flex-row items-center
+       hover:bg-gray-100 dark:border-gray-700
          dark:bg-gray-800 dark:hover:bg-gray-700`}
         >
-          <img
-            className="h-full max-w-[120px] min-w-[120px] object-cover rounded-lg"
-            src={`${
-              message?.customFile?.location ||
-              "https://cdn.vectorstock.com/i/1000x1000/65/35/no-picture-icon-editable-line-vector-30386535.webp"
-            }`}
-          />
-          <div className="w-full flex flex-2 flex-col justify-between p-4 leading-normal">
-            <p className="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
-              {scheduledDateRaw.toLocaleDateString("en-US", {
-                weekday: "short",
-                month: "short",
-                day: "numeric",
-              })}
-            </p>
-            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              {message.customMessage}
-            </p>
-            <div>
-              {topics?.map((topic) => (
-                <p key={topic} className="text-xs">
-                  {topic}
-                </p>
-              ))}
-            </div>
+          <p
+            className={`w-28 flex-none ${
+              message.scheduledMessageId && "font-bold"
+            } tracking-tight text-gray-900 dark:text-white`}
+          >
+            {scheduledDateRaw.toLocaleDateString("en-US", {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+            })}
+          </p>
+          <p
+            className={`font-normal truncate text-gray-700 dark:text-gray-400 flex-grow ${widths}`}
+          >
+            {message.customMessage}
+          </p>
+          {message.customFile && (
+            <Badge className="mx-2" color="failure">
+              <HiOutlineCamera />
+            </Badge>
+          )}
+          <div
+            className={`${!message.customFile && "ml-[44px]"} w-36 flex-none`}
+          >
+            {topics?.map((topic) => (
+              <p key={topic} className="text-xs">
+                {topic}
+              </p>
+            ))}
           </div>
-
-          <div className="pr-8">
-            <button
-              className={`
-              w-full
-              py-2.5 px-5 mr-2 mb-2 
-              text-sm font-medium text-gray-900 focus:outline-none
-            bg-white rounded-lg border border-gray-200 hover:bg-gray-100
-            hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
-            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400
-            dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"`}
-              onClick={() => editMessage(message)}
-            >
-              Edit
-            </button>
-            <button
-              className={`w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900`}
-              onClick={() => setDeleteMessage(message)}
-            >
-              Delete
-            </button>
-          </div>
+          <button
+            className={`h-10 w-8 flex-none focus:outline-none flex items-center justify-center
+               text-white hover:bg-red-100 focus:ring-4
+                focus:ring-red-300 font-mediumtext-sm`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setDeleteMessage(message);
+            }}
+          >
+            <HiOutlineTrash className="text-gray-600" />
+          </button>
         </div>
       </Message>
     );
@@ -110,24 +113,42 @@ export default function MessagesContainer({
   const [deleteMessage, setDeleteMessage] = useState(null);
 
   return (
-    <div className="max-w-full height-full">
-      <Button className="float-right" onClick={createMessage}>
-        New Message
-      </Button>
+    <div className="col-span-8">
+      <div className="flex flex-row justify-between">
+        <h2 className="text-2xl font-bold pb-12 text-gray-900">
+          {`The next ${messages.length} upcoming Banter prompts`}
+        </h2>
+        <Button className="" onClick={createMessage}>
+          <HiPlusCircle className="mr-2" />
+          Add your own prompt!
+        </Button>
+      </div>
 
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        {/* items is a list of unique identifiers, if you do not set it to the
+        <div className="divide-y divide-gray-200">
+          <div
+            className={`
+        flex flex-row items-center`}
+          >
+            <p className="w-28 flex-none font-bold tracking-tight text-gray-900 dark:text-white">
+              Date
+            </p>
+            <p className={`font-bold ${widths}`}>Message</p>
+            <div className="ml-[44px] w-36 flex-none font-bold">Topics</div>
+          </div>
+          {/* items is a list of unique identifiers, if you do not set it to the
             ids, then you do not get the correct output */}
-        <SortableContext
-          items={messages.map((message) => message._id)}
-          strategy={verticalListSortingStrategy}
-        >
-          {messages?.map((message, i) => renderMessage(message, i))}
-        </SortableContext>
+          <SortableContext
+            items={messages.map((message) => message._id)}
+            strategy={verticalListSortingStrategy}
+          >
+            {messages?.map((message, i) => renderMessage(message, i))}
+          </SortableContext>
+        </div>
       </DndContext>
       <Modal show={deleteMessage} onClose={() => setDeleteMessage(null)}>
         <Modal.Body>
