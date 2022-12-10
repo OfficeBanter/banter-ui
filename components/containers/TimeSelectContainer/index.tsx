@@ -25,25 +25,31 @@ export default function ChannelSelectContainer({
   };
 
   return (
-    <div className="w-[40vw]">
-      <h1>When do you want banter to happen?</h1>
-      <p>
+    <div className="w-[40vw] flex flex-col space-y-2 text-center ">
+      <h1 className="text-2xl font-bold">When do you want banter to happen?</h1>
+      <p className="text-lg">
         Choose when you want Banter to fire. We recommend every other day or
         once week.
       </p>
-      <select value={day} onChange={(e) => setDay(e.target.value)}>
-        {DAYS.map((day) => (
-          <option key={day.key} value={day.key}>
-            {day.val}
-          </option>
-        ))}
-      </select>
+      <div className="flex space-x-2">
+        <select
+          className="flex-grow"
+          value={day}
+          onChange={(e) => setDay(e.target.value)}
+        >
+          {DAYS.map((day) => (
+            <option key={day.key} value={day.key}>
+              {day.val}
+            </option>
+          ))}
+        </select>
 
-      <input
-        type="time"
-        value={time}
-        onChange={(e) => setTime(e.target.value)}
-      />
+        <input
+          type="time"
+          value={time}
+          onChange={(e) => setTime(e.target.value)}
+        />
+      </div>
 
       <select
         value={timezone?._id}

@@ -62,7 +62,7 @@ export function useToast(): ToastContext {
 
 export default () => {
   const context = useContext(ToastContext);
-  console.log(context?.toasts);
+
   return (
     <>
       {context?.banner?.message && (
@@ -86,7 +86,7 @@ export default () => {
           if (type === "warning") Icon = Warning;
 
           return (
-            <ToastFlowbite className="mt-3">
+            <ToastFlowbite key="message" className="mt-3">
               <Icon />
               <div className="ml-3 text-sm font-normal">{message}</div>
               <ToastFlowbite.Toggle />
