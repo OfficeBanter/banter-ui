@@ -13,6 +13,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import Loading, { LoadingProvider } from "../components/Loading";
 import { ToastProvider } from "../components/Toast";
+import { SettingsProvider } from "../services/setting.context";
 
 function App({ Component, pageProps }: AppProps) {
   const loadSegment = () => {
@@ -45,8 +46,10 @@ function App({ Component, pageProps }: AppProps) {
         <DndProvider backend={HTML5Backend}>
           <LoadingProvider>
             <ToastProvider>
-              <Component {...pageProps} />
-              <Loading />
+              <SettingsProvider>
+                <Component {...pageProps} />
+                <Loading />
+              </SettingsProvider>
             </ToastProvider>
           </LoadingProvider>
         </DndProvider>

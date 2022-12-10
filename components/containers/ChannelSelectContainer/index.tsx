@@ -2,6 +2,7 @@ import { Button, Modal } from "flowbite-react";
 import React, { useState } from "react";
 import Select from "react-select";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { useSettings } from "../../../services/setting.context";
 
 export default function ChannelSelectContainer({
   slackChannel,
@@ -9,12 +10,16 @@ export default function ChannelSelectContainer({
   channels,
   deleteChannel,
 }) {
+  const { settings } = useSettings();
   const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
     useState(false);
   const openDeleteConfirmationModal = () => {
     setIsDeleteConfirmationModalOpen(true);
   };
 
+  const channelsInUse = new Set(
+    settings?.map((setting) => setting.channel?.uniqueId)
+  );
   return (
     <div className="flex flex-col space-y-4 align-middle justify-center">
       <h1 className="text-center text-2xl font-bold">
@@ -31,7 +36,9 @@ export default function ChannelSelectContainer({
         isClearable={false}
         isSearchable={true}
         name="channels"
-        options={channels || []}
+        options={
+          channels?.filter(({ value }) => !channelsInUse.has(value)) || []
+        }
         value={slackChannel}
         onChange={(channel) =>
           setSlackChannel({

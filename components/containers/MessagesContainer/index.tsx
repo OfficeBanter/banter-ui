@@ -100,7 +100,6 @@ export default function MessagesContainer({
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
-    console.log();
 
     if (active.id !== over.id) {
       const oldIndex = messages.map((i) => i._id).indexOf(active.id);
