@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { Message } from "./Message";
 import { Button } from "flowbite-react";
 import {
@@ -15,10 +15,13 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+
+import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { Modal } from "flowbite-react";
 export default function MessagesContainer({
   messages,
   messagesDropped,
-  deleteMessage,
+  runDeleteMessage,
   editMessage,
   createMessage,
 }) {
@@ -78,7 +81,7 @@ export default function MessagesContainer({
             </button>
             <button
               className={`w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900`}
-              onClick={() => deleteMessage(message)}
+              onClick={() => setDeleteMessage(message)}
             >
               Delete
             </button>
@@ -105,6 +108,7 @@ export default function MessagesContainer({
       messagesDropped(oldIndex, newIndex, messages[oldIndex]._id);
     }
   }
+  const [deleteMessage, setDeleteMessage] = useState(null);
 
   return (
     <div className="max-w-full height-full">
@@ -126,6 +130,30 @@ export default function MessagesContainer({
           {messages?.map((message, i) => renderMessage(message, i))}
         </SortableContext>
       </DndContext>
+      <Modal show={deleteMessage} onClose={() => setDeleteMessage(null)}>
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete this message?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button
+                color="failure"
+                onClick={() => {
+                  runDeleteMessage(deleteMessage);
+                  setDeleteMessage(null);
+                }}
+              >
+                Yes, I'm sure
+              </Button>
+              <Button color="gray" onClick={() => setDeleteMessage(null)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

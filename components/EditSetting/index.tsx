@@ -191,13 +191,13 @@ export default function EditSetting({ channels, setChannels }) {
 
   const tabs = [
     {
-      name: "Overview",
-      step: "overview",
+      name: "Messages",
+      step: "messages",
       component: (
         <MessagesContainer
           messages={messages}
           messagesDropped={messagesDropped}
-          deleteMessage={deleteMessage}
+          runDeleteMessage={deleteMessage}
           editMessage={editMessage}
           createMessage={() => {
             setSelectedMessage(null);
@@ -251,7 +251,7 @@ export default function EditSetting({ channels, setChannels }) {
           >
             <div className="h-full p-4">
               {tab.component}
-              {tab.step !== "overview" && (
+              {tab.step !== "messages" && (
                 <>
                   <div className="w-full pt-4 flex flex-row-reverse">
                     <Button onClick={saveSetting}>Save</Button>
