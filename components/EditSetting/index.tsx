@@ -99,20 +99,33 @@ export default function EditSetting({ channels, setChannels }) {
   const saveSetting = async () => {
     try {
       setLoading(true);
-      const { setting: newSetting } = await settingService.saveSetting(setting);
-      setSetting({
-        ...newSetting,
-        tags: newSetting.tags,
-        channel: {
-          label: newSetting.channel.name,
-          name: newSetting.channel.name,
-          uniqueId: newSetting.channel.uniqueId,
-          value: newSetting.channel.uniqueId,
-        },
-      });
-      addToast({ type: "success", message: "Setting saved" });
+      const {
+        setting: newSetting,
+        status,
+        message,
+      } = await settingService.saveSetting(setting);
+      console.log("status", status, message);
+      if (!status) {
+        addToast({
+          type: "error",
+          message: message,
+        });
+      } else {
+        setSetting({
+          ...newSetting,
+          tags: newSetting.tags,
+          channel: {
+            label: newSetting.channel.name,
+            name: newSetting.channel.name,
+            uniqueId: newSetting.channel.uniqueId,
+            value: newSetting.channel.uniqueId,
+          },
+        });
+        addToast({ type: "success", message: "Setting saved" });
+      }
     } catch (error) {
       console.error(error);
+
       addToast({ type: "error", message: error?.message });
     }
 
@@ -153,7 +166,6 @@ export default function EditSetting({ channels, setChannels }) {
       const data = message._id
         ? await settingService.updateMessage(setting._id, message)
         : await settingService.createNewMessage(setting._id, message);
-
       setMessages(data.messages);
       addToast({
         type: "success",

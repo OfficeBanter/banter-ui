@@ -6,6 +6,7 @@ import NavBar from "../../../components/NavBar";
 import Sidebar from "../../../components/Sidebar";
 import EditSetting from "../../../components/EditSetting";
 import settingService from "../../../services/setting.service";
+import Toast from "../../../components/Toast";
 
 export default function AuthPage({ message }) {
   const router = useRouter();
@@ -38,6 +39,7 @@ export default function AuthPage({ message }) {
         <meta name="description" content="Login for Banter" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Toast />
       <div
         style={{ gridTemplateRows: "80px auto 1fr" }}
         className="grid grid-cols-12 grid-rows-3 auto-rows-min"
