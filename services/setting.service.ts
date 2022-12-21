@@ -28,6 +28,7 @@ const getTimezones = async () => {
 };
 
 const createSetting = async (setting) => {
+  console.log(setting);
   const { data } = await axios.post(
     `${process.env.NEXT_PUBLIC_API_URL}/setting`,
     setting

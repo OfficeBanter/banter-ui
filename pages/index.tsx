@@ -1,16 +1,10 @@
 import React from "react";
 import Head from "next/head";
 import authService from "../services/auth.service";
-import { useRouter } from "next/router";
-import { Navbar, Dropdown } from "flowbite-react";
+import { Navbar } from "flowbite-react";
 import Link from "next/link";
 
 export default function AuthPage({ message }) {
-  const router = useRouter();
-  if (authService.getUser()) {
-    router.replace("/dashboard");
-    return;
-  }
   return (
     <>
       <Head>
@@ -39,11 +33,11 @@ export default function AuthPage({ message }) {
         </Navbar>
         <div
           className={`
-          flex justify-center items-center h-full
+          flex justify-center items-center h-full flex-col
         `}
         >
-          <p>{message}</p>
-          <Link href={authService.getSlackSignInUrl()}>
+          <p className="text-lg font-bold mb-8">{message}</p>
+          <Link href={authService.getSlackAddUrl()}>
             <img
               alt="Add to Slack"
               height="40"

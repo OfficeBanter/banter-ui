@@ -53,13 +53,15 @@ export default function ChannelSelectContainer({
         set up Banter in, type
         <strong className="text-lg block pt-4">/invite @BanterBot</strong>
       </p>
-      <Button
-        color="failure"
-        className="w-48 self-center"
-        onClick={() => openDeleteConfirmationModal()}
-      >
-        Delete Channel
-      </Button>
+      {!!deleteChannel && (
+        <Button
+          color="failure"
+          className="w-48 self-center"
+          onClick={() => openDeleteConfirmationModal()}
+        >
+          Delete Channel
+        </Button>
+      )}
       <Modal
         show={isDeleteConfirmationModalOpen}
         onClose={() => setIsDeleteConfirmationModalOpen(false)}

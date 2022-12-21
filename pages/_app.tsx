@@ -29,7 +29,11 @@ function App({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   useEffect(() => {
-    if (!authService.getUser()) {
+    if (router.pathname === "/" && authService.getUser()) {
+      router.push("/dashboard");
+      return;
+    }
+    if (!router.pathname.includes("auth") && !authService.getUser()) {
       router.push("/");
     }
     authService.init();

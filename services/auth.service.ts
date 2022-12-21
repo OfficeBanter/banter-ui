@@ -84,6 +84,7 @@ const getUser = (): User | null => {
   const token = getToken();
   if (!token) return null;
   const data = decodeToken(token);
+  console.log(token, data);
   return data ? data.sub : null;
 };
 

@@ -49,7 +49,7 @@ export default () => {
 
   return (
     <div
-      className={`fixed z-50 
+      className={`fixed z-[60] 
       w-full h-full top-0 left-0 
       opacity-95 flex justify-center 
       items-center bg-gray-900 duration-700 pointer-events-none

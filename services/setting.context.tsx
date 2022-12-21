@@ -1,8 +1,8 @@
-import { createContext, useContext, useState } from "react";
-
+import { createContext, useContext, useEffect, useState } from "react";
+import settingService from "./setting.service";
 interface SettingsContext {
   settings: SettingType[] | null;
-  setSettings: (settings: SettingType[] | null) => void;
+  getSettings: () => Promise<void>;
 }
 const SettingsContext = createContext<SettingsContext | null>(null);
 
@@ -10,9 +10,19 @@ interface SettingType {}
 export function SettingsProvider({ children }) {
   const [settings, setSettings] = useState<SettingType[] | null>(null);
 
+  const getSettings = async () => {
+    const fetchedSettings = await settingService.getAllSettingsForWorkspace();
+    setSettings(fetchedSettings);
+  };
+
+  useEffect(() => {
+    console.log("nothing here");
+    getSettings();
+  }, []);
+
   const value = {
     settings,
-    setSettings,
+    getSettings,
   };
   return (
     <SettingsContext.Provider value={value}>

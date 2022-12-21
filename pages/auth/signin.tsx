@@ -14,7 +14,9 @@ export default function SigninRedirect() {
 
       const code = router.query.code;
       const data = await authService.signinToSlackWorkspace(code);
+      console.log(data);
       if (data.error) {
+        console.log(data.error, message);
         setMessage(data.error);
         return;
       }
@@ -23,6 +25,8 @@ export default function SigninRedirect() {
     };
     setAuth();
   }, [router.query.code]);
+
+  console.log(message);
 
   return <AuthPage message={message} />;
 }

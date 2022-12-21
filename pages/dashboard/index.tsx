@@ -6,6 +6,7 @@ import NavBar from "../../components/NavBar";
 import Onboarding from "../../components/AddToNewChannel";
 import Sidebar from "../../components/Sidebar";
 import Toast from "../../components/Toast";
+import { useSettings } from "../../services/setting.context";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -17,6 +18,13 @@ export default function Dashboard() {
     }
   }, []);
 
+  const { settings } = useSettings();
+
+  const showSidebar = settings && settings.length > 0;
+  const layout = showSidebar
+    ? "grid grid-cols-12 grid-rows-3 auto-rows-min"
+    : "grid grid-cols-9 grid-rows-3 auto-rows-min";
+
   return (
     <>
       <Head>
@@ -24,13 +32,14 @@ export default function Dashboard() {
         <meta name="description" content="Banter Application" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
-        <Toast />
+      <Toast />
+      <div
+        style={{ gridTemplateRows: showSidebar ? "80px auto 1fr" : "auto" }}
+        className={layout}
+      >
         <NavBar />
-        <div className="flex h-full">
-          <Sidebar />
-          <Onboarding />
-        </div>
+        {showSidebar && <Sidebar />}
+        <Onboarding />
       </div>
     </>
   );

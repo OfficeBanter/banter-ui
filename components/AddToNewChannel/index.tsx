@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from "react";
-import Head from "next/head";
 import settingService from "../../services/setting.service";
-import { Button } from "flowbite-react";
+import { Button, Modal } from "flowbite-react";
 import ChannelSelectContainer from "../containers/ChannelSelectContainer";
 import SetTagsContainer from "../containers/SetTagsContainer";
 import TimeSelectContainer from "../containers/TimeSelectContainer";
 import TIMEZONES, { Timezone } from "../Constants/timezones";
 import { DEFAULT_TAGS } from "../Constants/tags.ts";
 import DAYS from "../Constants/days";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { useLoading } from "../Loading";
+import { useToast } from "../Toast";
+import { useRouter } from "next/router";
+import { DateTime } from "luxon";
+import { useSettings } from "../../services/setting.context";
 
 export default function Onboarding({}) {
   const [channels, setChannels] = useState(null);
+  const setLoading = useLoading({ name: "overview" });
+  const { addToast } = useToast();
+  const router = useRouter();
+
+  const { getSettings } = useSettings();
+
   useEffect(() => {
     const getChannels = async () => {
       const channels = await settingService.getChannels();
@@ -22,13 +33,24 @@ export default function Onboarding({}) {
         }))
       );
     };
-    getChannels();
+    (async () => {
+      try {
+        setLoading(true);
+        await getSettings();
+        await getChannels();
+        setLoading(false);
+      } catch (error) {
+        addToast({ type: "error", message: error.message });
+      }
+    })();
   }, []);
+
   const [setting, setSetting] = useState({
     tags: DEFAULT_TAGS,
     timezone: TIMEZONES[6],
     day: DAYS[0].key,
     time: "11:00",
+    userTimeZone: DateTime.local().zoneName,
   });
 
   const setDay = (day: string) => {
@@ -40,7 +62,7 @@ export default function Onboarding({}) {
   };
 
   const setTimezone = (timezone: Timezone) => {
-    setSetting({ ...setting, timezone: timezone._id });
+    setSetting({ ...setting, timezone });
   };
 
   const setTags = (tags: string[]) => {
@@ -57,12 +79,43 @@ export default function Onboarding({}) {
       setStep(0);
     }
     if (step > 2) {
-      const saveSetting = async () => {
-        const createdSetting = await settingService.createSetting(setting);
-      };
-      saveSetting();
+      setIsModalOpen(true);
     }
   }, [step]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const submit = async () => {
+    setStep(2);
+    try {
+      setLoading(true);
+      const {
+        data: createdSetting,
+        status,
+        message,
+      } = await settingService.createSetting({
+        ...setting,
+        timezone: setting.timezone._id,
+      });
+
+      if (!status) {
+        throw new Error(message);
+      }
+
+      addToast({
+        type: "success",
+        message: "New Banter Created!",
+      });
+      router.push(`/setting/${createdSetting._id}/overview`);
+    } catch (error) {
+      console.error(error);
+      addToast({
+        type: "error",
+        message: error?.message || "Something went wrong!",
+      });
+    }
+    setLoading(false);
+    setIsModalOpen(false);
+  };
 
   const isValidStep = () => {
     if (step === 0) {
@@ -77,7 +130,7 @@ export default function Onboarding({}) {
   };
 
   return (
-    <div>
+    <div className="h-full col-span-9 row-span-2 p-6 w-min my-0 mx-auto">
       {step <= 0 && (
         <ChannelSelectContainer
           channels={channels}
@@ -96,16 +149,45 @@ export default function Onboarding({}) {
           setTimezone={setTimezone}
         />
       )}
-      {step <= 2 && (
-        <>
-          {step > 0 && (
-            <Button onClick={() => setStep(step - 1)}> Back </Button>
-          )}
-          <Button disabled={!isValidStep()} onClick={() => setStep(step + 1)}>
-            {step === 2 ? "Submit" : "Next"}
-          </Button>
-        </>
-      )}
+      <div className="flex space-x-48 justify-center mt-8">
+        {step <= 2 && (
+          <>
+            {step > 0 && (
+              <Button onClick={() => setStep(step - 1)}> Back </Button>
+            )}
+            <Button disabled={!isValidStep()} onClick={() => setStep(step + 1)}>
+              {step >= 2 ? "Submit" : "Next"}
+            </Button>
+          </>
+        )}
+      </div>
+      <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400 whitespace-pre-wrap">
+              {`You are about to add another bot to your workspace.
+              This will be billed at the same rate as your other channels.
+              Including any promos.
+              If you are on a free trial, nothing will be charged.`}
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="success" onClick={submit}>
+                Yes, I'm sure
+              </Button>
+              <Button
+                color="gray"
+                onClick={() => {
+                  setStep(2);
+                  setIsModalOpen(false);
+                }}
+              >
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

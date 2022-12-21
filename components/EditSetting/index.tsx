@@ -10,6 +10,7 @@ import { Tabs } from "flowbite-react";
 import { useLoading } from "../Loading";
 import { useToast } from "../Toast";
 import { Button } from "flowbite-react";
+import { Timezone } from "../Constants/timezones";
 
 export default function EditSetting({ channels, setChannels }) {
   const router = useRouter();
@@ -81,7 +82,7 @@ export default function EditSetting({ channels, setChannels }) {
   };
 
   const setTimezone = (timezone: Timezone) => {
-    setSetting({ ...setting, timezone: timezone._id });
+    setSetting({ ...setting, timezone });
   };
 
   const setTags = (tags: string[]) => {
@@ -103,8 +104,12 @@ export default function EditSetting({ channels, setChannels }) {
         setting: newSetting,
         status,
         message,
-      } = await settingService.saveSetting(setting);
-      console.log("status", status, message);
+      } = await settingService.saveSetting({
+        ...setting,
+        timezone: setting.timezone._id,
+      });
+
+      console.log("status", status, message, setting);
       if (!status) {
         addToast({
           type: "error",
