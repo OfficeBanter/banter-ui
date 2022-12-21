@@ -11,6 +11,7 @@ import { useLoading } from "../Loading";
 import { useToast } from "../Toast";
 import { Button } from "flowbite-react";
 import { Timezone } from "../Constants/timezones";
+import { useSettings } from "../../services/setting.context";
 
 export default function EditSetting({ channels, setChannels }) {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function EditSetting({ channels, setChannels }) {
 
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
+  const { getSettings } = useSettings();
 
   const [setting, setSetting] = useState(null);
   useEffect(() => {
@@ -109,7 +111,6 @@ export default function EditSetting({ channels, setChannels }) {
         timezone: setting.timezone._id,
       });
 
-      console.log("status", status, message, setting);
       if (!status) {
         addToast({
           type: "error",
@@ -126,6 +127,7 @@ export default function EditSetting({ channels, setChannels }) {
             value: newSetting.channel.uniqueId,
           },
         });
+        await getSettings();
         addToast({ type: "success", message: "Setting saved" });
       }
     } catch (error) {
