@@ -105,6 +105,7 @@ export default function Onboarding({}) {
         type: "success",
         message: "New Banter Created!",
       });
+      await getSettings();
       router.push(`/setting/${createdSetting._id}/overview`);
     } catch (error) {
       console.error(error);
@@ -131,6 +132,12 @@ export default function Onboarding({}) {
 
   return (
     <div className="h-full col-span-9 row-span-2 p-6 w-min my-0 mx-auto">
+      <div className="w-full h-6 mb-6 bg-gray-200 rounded-full dark:bg-gray-700">
+        <div
+          className="h-6 bg-blue-400 rounded-full dark:bg-blue-500"
+          style={{ width: `${(step + 1) * 33}%` }}
+        />
+      </div>
       {step <= 0 && (
         <ChannelSelectContainer
           channels={channels}
@@ -153,9 +160,21 @@ export default function Onboarding({}) {
         {step <= 2 && (
           <>
             {step > 0 && (
-              <Button onClick={() => setStep(step - 1)}> Back </Button>
+              <Button
+                className={`
+                rounded-full bg-blue-50 border-2 border-blue-900
+                 text-slate-900 hover:bg-blue-100 px-6`}
+                onClick={() => setStep(step - 1)}
+              >
+                {" "}
+                Back{" "}
+              </Button>
             )}
-            <Button disabled={!isValidStep()} onClick={() => setStep(step + 1)}>
+            <Button
+              className="rounded-full bg-blue-900 px-6 hover:bg-blue-800"
+              disabled={!isValidStep()}
+              onClick={() => setStep(step + 1)}
+            >
               {step >= 2 ? "Submit" : "Next"}
             </Button>
           </>

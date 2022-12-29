@@ -13,21 +13,78 @@ const encodeParams = (params) => {
     .join("&");
 };
 
+import { DateTime } from "luxon";
+import { HiArrowRight } from "react-icons/hi";
+
+const getBillingMessage = (subscription: any) => {
+  if (!subscription?.isFreeTrial && subscription?.isActive) {
+    return;
+  }
+
+  if (!subscription.isActive) {
+    return (
+      <p className="flex space-x-2">
+        <a href="/billing">
+          Your free trial is over click here to upgrade your account
+        </a>{" "}
+        <HiArrowRight />
+      </p>
+    );
+  }
+
+  const subscriptionTrialEndDate = DateTime.fromISO(
+    subscription.subscriptionEndsOn
+  );
+  let difference = subscriptionTrialEndDate.diffNow().as("days");
+
+  let message = "";
+  if (difference >= 2 && difference <= 30) {
+    message = `Your free trial ends on ${subscriptionTrialEndDate.toFormat(
+      "MM DD"
+    )}.`;
+  } else if (difference > 1 && difference < 2) {
+    message = `Your free trial ends tomorrow.`;
+  } else if (difference < 1) {
+    message = `It’s not near, it’s here, your Banterbot trial is expiring later today. You can use the discount code to keep the good times rolling. Do you need more time to test out Banter?`;
+  }
+  return `${message}`.trim();
+};
+
 export default function NavBar({}) {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const context = useToast();
+  const { setBanner, addToast } = useToast();
+  const [subscription, setSubscription] = useState(null);
 
   useEffect(() => {
     setUser(authService.getUser());
-    context.setBanner({ type: "failure", message: "Welcome to Banter!" });
+    // iife
+    (async () => {
+      try {
+        const { data } = await authService.getSubscriptionInfo();
+        const billingMessage = getBillingMessage(data.subscription);
+        setSubscription(data.subscription);
+
+        if (billingMessage) {
+          setBanner({
+            type: "failure",
+            message: billingMessage,
+          });
+        }
+      } catch (error) {
+        addToast({
+          type: "error",
+          message: error?.message || "Error fetching subscription info",
+        });
+      }
+    })();
   }, []);
 
   if (!user) return null;
 
   return (
     <Navbar
-      className="bg-sky-500 rounded-none col-span-12 row-span-1"
+      className="bg-rose-50 rounded-none col-span-12 row-span-1"
       fluid={true}
       rounded={true}
     >
@@ -41,15 +98,17 @@ export default function NavBar({}) {
       <Navbar.Toggle />
       <Navbar.Collapse>
         <Navbar.Link
-          href={`${process.env.NEXT_PUBLIC_STRIPE_BILLING_URL}?${encodeParams({
-            prefilled_email: user.email,
-          })}`}
+          href={
+            !subscription?.isActive || subscription?.isFreeTrial
+              ? "/billing"
+              : `${process.env.NEXT_PUBLIC_STRIPE_BILLING_URL}?${encodeParams({
+                  prefilled_email: user.email,
+                })}`
+          }
         >
           Billing
         </Navbar.Link>
-
         <Navbar.Link href="https://banter.so/support">Support</Navbar.Link>
-
         <Dropdown label={`${user.name} (${user.workspace})`} inline={true}>
           <Dropdown.Item
             onClick={() => {

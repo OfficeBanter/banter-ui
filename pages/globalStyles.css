@@ -4,8 +4,8 @@
 
 body,
 #__next {
-  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
-    "Arial", sans-serif;
+  font-family: "QuickSand, SF Pro Text", "SF Pro Icons", "Helvetica Neue",
+    "Helvetica", "Arial", sans-serif;
   margin: 0 auto;
   height: 100vh;
 }

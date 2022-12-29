@@ -84,7 +84,6 @@ const getUser = (): User | null => {
   const token = getToken();
   if (!token) return null;
   const data = decodeToken(token);
-  console.log(token, data);
   return data ? data.sub : null;
 };
 
@@ -108,6 +107,13 @@ const logoutUser = () => {
   localStorage.removeItem("token");
 };
 
+const getSubscriptionInfo = async () => {
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/subscription/info`
+  );
+  return data;
+};
+
 export default {
   getSlackSignInUrl,
   addSlackWorkspace,
@@ -118,4 +124,5 @@ export default {
   setToken,
   init,
   logoutUser,
+  getSubscriptionInfo,
 };

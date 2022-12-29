@@ -9,14 +9,7 @@ import Toast from "../../components/Toast";
 import { useSettings } from "../../services/setting.context";
 
 export default function Dashboard() {
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!authService.getUser()) {
-      router.replace("/");
-      return;
-    }
-  }, []);
+  console.log("dashboard");
 
   const { settings } = useSettings();
 
@@ -34,7 +27,7 @@ export default function Dashboard() {
       </Head>
       <Toast />
       <div
-        style={{ gridTemplateRows: showSidebar ? "80px auto 1fr" : "auto" }}
+        style={{ gridTemplateRows: showSidebar ? "64px auto 1fr" : "auto" }}
         className={layout}
       >
         <NavBar />

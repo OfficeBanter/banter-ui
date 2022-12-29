@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import authService from "../services/auth.service";
 import { Navbar } from "flowbite-react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function AuthPage({ message }) {
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (authService.getUser()) {
+      router.push("/dashboard");
+      return;
+    }
+    setLoading(false);
+  }, []);
+
+  if (loading) return;
+
   return (
     <>
       <Head>
@@ -13,7 +28,7 @@ export default function AuthPage({ message }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="h-screen">
-        <Navbar className="bg-sky-500 rounded-none" fluid={true} rounded={true}>
+        <Navbar className="bg-rose-50 rounded-none" fluid={true} rounded={true}>
           <Navbar.Brand href="/">
             <img
               src="/Banter_Logo.svg"

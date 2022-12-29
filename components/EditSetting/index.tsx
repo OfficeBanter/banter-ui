@@ -12,6 +12,7 @@ import { useToast } from "../Toast";
 import { Button } from "flowbite-react";
 import { Timezone } from "../Constants/timezones";
 import { useSettings } from "../../services/setting.context";
+import DAYS from "../Constants/days";
 
 export default function EditSetting({ channels, setChannels }) {
   const router = useRouter();
@@ -214,16 +215,33 @@ export default function EditSetting({ channels, setChannels }) {
       name: "Messages",
       step: "messages",
       component: (
-        <MessagesContainer
-          messages={messages}
-          messagesDropped={messagesDropped}
-          runDeleteMessage={deleteMessage}
-          editMessage={editMessage}
-          createMessage={() => {
-            setSelectedMessage(null);
-            setIsMessageModalOpen(true);
-          }}
-        />
+        <>
+          <div
+            className={`
+            p-4 mb-4 text-xl bg-slate-100 rounded-lg 
+            `}
+            role="alert"
+          >
+            Banter is happening{" "}
+            <span className="underline font-medium">
+              {DAYS.find((d) => d.key === setting.day).val}
+            </span>{" "}
+            at <span className="underline font-medium">{setting.time}</span> in{" "}
+            <span className="underline font-medium">
+              #{setting.channel.name}
+            </span>
+          </div>
+          <MessagesContainer
+            messages={messages}
+            messagesDropped={messagesDropped}
+            runDeleteMessage={deleteMessage}
+            editMessage={editMessage}
+            createMessage={() => {
+              setSelectedMessage(null);
+              setIsMessageModalOpen(true);
+            }}
+          />
+        </>
       ),
     },
     {
@@ -261,7 +279,7 @@ export default function EditSetting({ channels, setChannels }) {
 
   return (
     <div className="col-span-9">
-      <Tabs.Group aria-label="Full width tabs" style="fullWidth">
+      <Tabs.Group aria-label="Full width tabs">
         {tabs.map((tab) => (
           <Tabs.Item
             onClick={(e) => e.preventDefault()}
@@ -273,7 +291,12 @@ export default function EditSetting({ channels, setChannels }) {
               {tab.component}
               {tab.step !== "messages" && (
                 <div className="w-full pt-4 flex flex-row-reverse">
-                  <Button onClick={saveSetting}>Save</Button>
+                  <Button
+                    className="rounded-full bg-blue-900 hover:bg-blue-800"
+                    onClick={saveSetting}
+                  >
+                    Update
+                  </Button>
                 </div>
               )}
               {isMessageModalOpen && (

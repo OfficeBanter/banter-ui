@@ -16,7 +16,6 @@ export function SettingsProvider({ children }) {
   };
 
   useEffect(() => {
-    console.log("nothing here");
     getSettings();
   }, []);
 

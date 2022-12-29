@@ -41,7 +41,7 @@ export default function AuthPage({ message }) {
       </Head>
       <Toast />
       <div
-        style={{ gridTemplateRows: "80px auto 1fr" }}
+        style={{ gridTemplateRows: "64px auto 1fr" }}
         className="grid grid-cols-12 grid-rows-3 auto-rows-min"
       >
         <NavBar />

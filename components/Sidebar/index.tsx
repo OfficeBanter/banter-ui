@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useLoading } from "../Loading";
 import { useSettings } from "../../services/setting.context";
+import { HiOutlinePlusCircle, HiUserAdd } from "react-icons/hi";
 
 export default function Sidebar({}) {
   const setLoading = useLoading({ name: "sidebar" });
@@ -20,7 +21,7 @@ export default function Sidebar({}) {
         col-span-3 row-span-2
 
         h-full
-        overflow-y-auto bg-sky-100  dark:bg-gray-800
+        overflow-y-auto bg-slate-50
         `}
         tabIndex={-1}
         aria-labelledby="drawer-label"
@@ -30,7 +31,7 @@ export default function Sidebar({}) {
           className={`
           text-2xl
           inline-flex items-center mb-4 text-base 
-          font-semibold text-gray-500 dark:text-gray-400`}
+           text-gray-500 dark:text-gray-400`}
         >
           Your Channels
         </h2>
@@ -39,11 +40,12 @@ export default function Sidebar({}) {
             {settings?.map((setting) => (
               <li
                 className={`
+                mt-2
                   text-lg
-                 text-gray-500 dark:text-gray-400
+                 text-gray-500
                 ${
                   settingId === setting._id &&
-                  "font-bold text-gray-900 dark:text-gray-900"
+                  "font-bold text-gray-900 bg-blue-100  mr-2 px-2.5 py-0.5 rounded-full"
                 }
             `}
                 key={setting._id}
@@ -55,8 +57,11 @@ export default function Sidebar({}) {
                 </Link>
               </li>
             ))}
+            <hr className="my-8 h-px bg-gray-900 border-0 dark:bg-gray-700" />
             <li>
-              <Link href="/dashboard">Add New Channel</Link>
+              <Link href="/dashboard">
+                <HiOutlinePlusCircle className="inline" /> Add New Channel
+              </Link>
             </li>
           </ol>
         ) : (

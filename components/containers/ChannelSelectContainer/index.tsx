@@ -9,6 +9,8 @@ export default function ChannelSelectContainer({
   setSlackChannel,
   channels,
   deleteChannel,
+  disableSave,
+  disableDropdown,
 }) {
   const { settings } = useSettings();
   const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
@@ -55,7 +57,7 @@ export default function ChannelSelectContainer({
       </p>
       {!!deleteChannel && (
         <Button
-          color="failure"
+          color="bg-none underline"
           className="w-48 self-center"
           onClick={() => openDeleteConfirmationModal()}
         >

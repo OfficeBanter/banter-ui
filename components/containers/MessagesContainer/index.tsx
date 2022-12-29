@@ -28,6 +28,7 @@ import { useSettings } from "../../../services/setting.context";
 
 const widths = "w-[30vw]";
 export default function MessagesContainer({
+  disabled,
   messages,
   messagesDropped,
   runDeleteMessage,
@@ -118,7 +119,10 @@ export default function MessagesContainer({
         <h2 className="text-2xl font-bold pb-12 text-gray-900">
           {`The next ${messages.length} upcoming Banter prompts`}
         </h2>
-        <Button className="" onClick={createMessage}>
+        <Button
+          className="rounded-full bg-lime-600 hover:bg-lime-800 text-xl"
+          onClick={createMessage}
+        >
           <HiPlusCircle className="mr-2" />
           Add your own prompt!
         </Button>
