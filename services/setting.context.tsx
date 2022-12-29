@@ -9,18 +9,23 @@ const SettingsContext = createContext<SettingsContext | null>(null);
 interface SettingType {}
 export function SettingsProvider({ children }) {
   const [settings, setSettings] = useState<SettingType[] | null>(null);
+  const [subscription, setSubscription] = useState<SettingType[] | null>(null);
 
   const getSettings = async () => {
-    const fetchedSettings = await settingService.getAllSettingsForWorkspace();
-    setSettings(fetchedSettings);
+    const { settings, subscription } =
+      await settingService.getAllSettingsForWorkspace();
+    setSettings(settings);
+    setSubscription(subscription);
   };
 
   useEffect(() => {
+    console.log("settings context");
     getSettings();
   }, []);
 
   const value = {
     settings,
+    subscription,
     getSettings,
   };
   return (

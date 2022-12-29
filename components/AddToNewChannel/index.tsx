@@ -36,7 +36,6 @@ export default function Onboarding({}) {
     (async () => {
       try {
         setLoading(true);
-        await getSettings();
         await getChannels();
         setLoading(false);
       } catch (error) {

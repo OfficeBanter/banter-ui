@@ -15,8 +15,10 @@ const encodeParams = (params) => {
 
 import { DateTime } from "luxon";
 import { HiArrowRight } from "react-icons/hi";
+import { useSettings } from "../../services/setting.context";
 
 const getBillingMessage = (subscription: any) => {
+  if (!subscription) return;
   if (!subscription?.isFreeTrial && subscription?.isActive) {
     return;
   }
@@ -52,35 +54,22 @@ const getBillingMessage = (subscription: any) => {
 
 export default function NavBar({}) {
   const router = useRouter();
-  const [user, setUser] = useState(null);
-  const { setBanner, addToast } = useToast();
-  const [subscription, setSubscription] = useState(null);
+  const user = authService.getUser();
+  const { setBanner } = useToast();
+  const { subscription } = useSettings();
 
   useEffect(() => {
-    setUser(authService.getUser());
-    // iife
-    (async () => {
-      try {
-        const { data } = await authService.getSubscriptionInfo();
-        const billingMessage = getBillingMessage(data.subscription);
-        setSubscription(data.subscription);
+    const billingMessage = getBillingMessage(subscription);
 
-        if (billingMessage) {
-          setBanner({
-            type: "failure",
-            message: billingMessage,
-          });
-        }
-      } catch (error) {
-        addToast({
-          type: "error",
-          message: error?.message || "Error fetching subscription info",
-        });
-      }
-    })();
-  }, []);
+    if (billingMessage) {
+      setBanner({
+        type: "failure",
+        message: billingMessage,
+      });
+    }
+  }, [subscription]);
 
-  if (!user) return null;
+  if (!user || !subscription) return null;
 
   return (
     <Navbar
