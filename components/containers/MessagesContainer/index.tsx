@@ -40,7 +40,12 @@ export default function MessagesContainer({
     const topics = message?.message?.tags.map(({ name }) => name);
 
     return (
-      <Message key={message._id} className="flex flex-1" id={message._id}>
+      <Message
+        key={message._id}
+        disabled={disabled}
+        className="flex flex-1"
+        id={message._id}
+      >
         <div
           onClick={() => editMessage(message)}
           key={message._id}
@@ -120,6 +125,7 @@ export default function MessagesContainer({
           {`The next ${messages.length} upcoming Banter prompts`}
         </h2>
         <Button
+          disabled={disabled}
           className="rounded-full bg-lime-600 hover:bg-lime-800 text-xl"
           onClick={createMessage}
         >

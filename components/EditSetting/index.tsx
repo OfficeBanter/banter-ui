@@ -22,7 +22,9 @@ export default function EditSetting({ channels, setChannels }) {
 
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
-  const { getSettings } = useSettings();
+  const { getSettings, settings, subscription } = useSettings();
+
+  const subscritionIsActive = subscription?.isActive;
 
   const [setting, setSetting] = useState(null);
   useEffect(() => {
@@ -199,6 +201,7 @@ export default function EditSetting({ channels, setChannels }) {
         type: "success",
         message: "Channel deleted",
       });
+      await getSettings();
       router.push("/dashboard");
     } catch (error) {
       console.error(error);
@@ -233,6 +236,7 @@ export default function EditSetting({ channels, setChannels }) {
           </div>
           <MessagesContainer
             messages={messages}
+            disabled={!subscritionIsActive}
             messagesDropped={messagesDropped}
             runDeleteMessage={deleteMessage}
             editMessage={editMessage}
@@ -249,8 +253,9 @@ export default function EditSetting({ channels, setChannels }) {
       step: "channel",
       component: (
         <ChannelSelectContainer
+          disabled={!subscritionIsActive}
           channels={channels}
-          deleteChannel={deleteChannel}
+          deleteChannel={settings?.length > 1 ? deleteChannel : null}
           slackChannel={setting.channel}
           setSlackChannel={setSlackChannel}
         />
@@ -259,13 +264,20 @@ export default function EditSetting({ channels, setChannels }) {
     {
       name: "Topics",
       step: "tags",
-      component: <SetTagsContainer tags={setting.tags} setTags={setTags} />,
+      component: (
+        <SetTagsContainer
+          disabled={!subscritionIsActive}
+          tags={setting.tags}
+          setTags={setTags}
+        />
+      ),
     },
     {
       name: "Scheduling",
       step: "trigger",
       component: (
         <TimeSelectContainer
+          disabled={!subscritionIsActive}
           timezone={setting.timezone}
           day={setting.day}
           time={setting.time}
@@ -290,9 +302,10 @@ export default function EditSetting({ channels, setChannels }) {
             <div className="h-full p-4 w-min my-0 mx-auto">
               {tab.component}
               {tab.step !== "messages" && (
-                <div className="w-full pt-4 flex flex-row-reverse">
+                <div className="w-full pt-4 flex justify-center">
                   <Button
-                    className="rounded-full bg-blue-900 hover:bg-blue-800"
+                    disabled={!subscritionIsActive}
+                    className="rounded-full px-4 bg-blue-900 hover:bg-blue-800"
                     onClick={saveSetting}
                   >
                     Update

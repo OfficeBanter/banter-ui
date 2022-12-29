@@ -10,7 +10,9 @@ export default function Sidebar({}) {
 
   const router = useRouter();
   const { settingId } = router.query;
-  const { settings } = useSettings();
+  const { settings, subscription } = useSettings();
+
+  const subscritionIsActive = subscription?.isActive;
 
   return (
     <>
@@ -57,12 +59,17 @@ export default function Sidebar({}) {
                 </Link>
               </li>
             ))}
-            <hr className="my-8 h-px bg-gray-900 border-0 dark:bg-gray-700" />
-            <li>
-              <Link href="/dashboard">
-                <HiOutlinePlusCircle className="inline" /> Add New Channel
-              </Link>
-            </li>
+
+            {subscritionIsActive && (
+              <>
+                <hr className="my-8 h-px bg-gray-900 border-0 dark:bg-gray-700" />
+                <li>
+                  <Link href="/dashboard">
+                    <HiOutlinePlusCircle className="inline" /> Add New Channel
+                  </Link>
+                </li>
+              </>
+            )}
           </ol>
         ) : (
           <p className="p-40">Loading</p>

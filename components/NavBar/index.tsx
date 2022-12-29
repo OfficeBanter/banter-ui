@@ -55,6 +55,7 @@ const getBillingMessage = (subscription: any) => {
 export default function NavBar({}) {
   const router = useRouter();
   const user = authService.getUser();
+  console.log(user);
   const { setBanner } = useToast();
   const { subscription } = useSettings();
 
@@ -87,6 +88,12 @@ export default function NavBar({}) {
       <Navbar.Toggle />
       <Navbar.Collapse>
         <Navbar.Link
+          className={
+            subscription?.isActive &&
+            !subscription?.isFreeTrial &&
+            subscription.user !== user.id &&
+            "hidden"
+          }
           href={
             !subscription?.isActive || subscription?.isFreeTrial
               ? "/billing"
@@ -97,6 +104,7 @@ export default function NavBar({}) {
         >
           Billing
         </Navbar.Link>
+
         <Navbar.Link href="https://banter.so/support">Support</Navbar.Link>
         <Dropdown label={`${user.name} (${user.workspace})`} inline={true}>
           <Dropdown.Item

@@ -7,6 +7,7 @@ export interface MessageProps {
   id: any;
   children: any;
   className: string;
+  disabled?: boolean;
 }
 
 interface DragItem {
@@ -15,7 +16,12 @@ interface DragItem {
   type: string;
 }
 
-export const Message: FC<MessageProps> = ({ id, children, className }) => {
+export const Message: FC<MessageProps> = ({
+  id,
+  children,
+  className,
+  disabled,
+}) => {
   const {
     attributes,
     listeners,
@@ -23,7 +29,7 @@ export const Message: FC<MessageProps> = ({ id, children, className }) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id });
+  } = useSortable({ id, disabled });
 
   const style = {
     transform: CSS.Transform.toString(transform),

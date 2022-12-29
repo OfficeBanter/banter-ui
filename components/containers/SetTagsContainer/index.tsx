@@ -5,9 +5,11 @@ import { Checkbox, Label, Modal } from "flowbite-react";
 export default function SetTagsContainer({
   tags,
   setTags,
+  disabled,
 }: {
   tags: string[];
   setTags: (tags: string[]) => void;
+  disabled?: boolean;
 }) {
   const escFunction = useCallback((event) => {
     if (event.key === "Escape") {
@@ -52,8 +54,9 @@ export default function SetTagsContainer({
       {TAGS.map((tag) => {
         return (
           <React.Fragment key={tag._id}>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 disabled:">
               <Checkbox
+                disabled={disabled}
                 id={tag.name}
                 checked={tags.includes(tag._id)}
                 onChange={(e) => toggleTags(tag._id)}

@@ -9,8 +9,7 @@ export default function ChannelSelectContainer({
   setSlackChannel,
   channels,
   deleteChannel,
-  disableSave,
-  disableDropdown,
+  disabled,
 }) {
   const { settings } = useSettings();
   const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
@@ -37,6 +36,7 @@ export default function ChannelSelectContainer({
         isLoading={!channels}
         isClearable={false}
         isSearchable={true}
+        isDisabled={disabled}
         name="channels"
         options={
           channels?.filter(({ value }) => !channelsInUse.has(value)) || []

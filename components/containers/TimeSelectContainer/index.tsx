@@ -9,6 +9,7 @@ export default function ChannelSelectContainer({
   setDay,
   time,
   setTime = () => {},
+  disabled,
 }: {
   timezone?: Timezone;
   setTimezone: (timezone: Timezone) => void;
@@ -16,6 +17,7 @@ export default function ChannelSelectContainer({
   setDay: (day: string) => void;
   time?: string;
   setTime: (time: string) => void;
+  disabled?: boolean;
 }) {
   const setTimezoneFromId = (timezoneId: string) => {
     const timezone = TIMEZONES.find(({ _id }) => _id === timezoneId);
@@ -33,6 +35,7 @@ export default function ChannelSelectContainer({
       </p>
       <div className="flex space-x-2">
         <select
+          disabled={disabled}
           className="flex-grow"
           value={day}
           onChange={(e) => setDay(e.target.value)}
@@ -45,6 +48,7 @@ export default function ChannelSelectContainer({
         </select>
 
         <input
+          disabled={disabled}
           type="time"
           value={time}
           onChange={(e) => setTime(e.target.value)}
@@ -52,6 +56,7 @@ export default function ChannelSelectContainer({
       </div>
 
       <select
+        disabled={disabled}
         value={timezone?._id}
         onChange={(e) => setTimezoneFromId(e.target.value)}
       >
