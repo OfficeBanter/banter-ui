@@ -20,7 +20,7 @@ export default function ChannelSelectContainer({
   disabled?: boolean;
 }) {
   const setTimezoneFromId = (timezoneId: string) => {
-    const timezone = TIMEZONES.find(({ _id }) => _id === timezoneId);
+    const timezone = TIMEZONES.find(({ _id }) => _id === timezoneId.toString());
     if (timezone) {
       setTimezone(timezone);
     }

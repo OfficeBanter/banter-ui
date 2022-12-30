@@ -110,14 +110,12 @@ export default function Dashboard() {
 
   const pay = async (pricingId: string) => {
     const data = await subscriptionService.pay(pricingId);
-    console.log(data);
     window.location = data.paymentURL;
   };
 
   useEffect(() => {
     const getSubscriptions = async () => {
       const subscriptions = await subscriptionService.getProducts();
-      console.log(subscriptions);
       setProducts(subscriptions);
     };
 

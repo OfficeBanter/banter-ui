@@ -9,8 +9,6 @@ import Toast from "../../components/Toast";
 import { useSettings } from "../../services/setting.context";
 
 export default function Dashboard() {
-  console.log("dashboard");
-
   const { settings } = useSettings();
 
   const showNav = settings && settings.length > 0;

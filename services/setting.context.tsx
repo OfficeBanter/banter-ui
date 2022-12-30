@@ -19,7 +19,6 @@ export function SettingsProvider({ children }) {
   };
 
   useEffect(() => {
-    console.log("settings context");
     getSettings();
   }, []);
 

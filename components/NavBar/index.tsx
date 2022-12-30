@@ -50,17 +50,20 @@ const getBillingMessage = (subscription: any) => {
     message = `It’s not near, it’s here, your Banterbot trial is expiring later today. You can use the discount code to keep the good times rolling. Do you need more time to test out Banter?`;
   }
   return (
-    <p className="flex space-x-2">
-      <Link href="/billing">{message.trim()} Click here to update billing</Link>{" "}
-      <HiArrowRight />
-    </p>
+    message && (
+      <p className="flex space-x-2">
+        <Link href="/billing">
+          {message.trim()} Click here to update billing
+        </Link>{" "}
+        <HiArrowRight />
+      </p>
+    )
   );
 };
 
 export default function NavBar({}) {
   const router = useRouter();
   const user = authService.getUser();
-  console.log(user);
   const { setBanner } = useToast();
   const { subscription } = useSettings();
 
