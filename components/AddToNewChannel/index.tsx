@@ -193,7 +193,7 @@ export default function Onboarding({}) {
             </h3>
             <div className="flex justify-center gap-4">
               <Button color="success" onClick={submit}>
-                Yes, I'm sure
+                Yes, I&apos;m sure
               </Button>
               <Button
                 color="gray"

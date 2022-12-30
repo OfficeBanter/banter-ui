@@ -163,6 +163,7 @@ export default function Dashboard() {
                 if (standardizedProduct.bestValue) {
                   return (
                     <Popular
+                      key={product.id}
                       data={{
                         ...standardizedProduct,
                         onClick: () => pay(product.id),
@@ -172,6 +173,7 @@ export default function Dashboard() {
                 }
                 return (
                   <BasicCard
+                    key={product.id}
                     data={{
                       ...standardizedProduct,
                       onClick: () => pay(product.id),

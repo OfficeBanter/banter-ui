@@ -3,6 +3,10 @@ import authService from "../../services/auth.service";
 import { Navbar, Dropdown } from "flowbite-react";
 import { useRouter } from "next/router";
 import { useToast } from "../Toast";
+import { DateTime } from "luxon";
+import { HiArrowRight } from "react-icons/hi";
+import { useSettings } from "../../services/setting.context";
+import Link from "next/link";
 
 // encode url parameters to a string
 const encodeParams = (params) => {
@@ -13,10 +17,6 @@ const encodeParams = (params) => {
     .join("&");
 };
 
-import { DateTime } from "luxon";
-import { HiArrowRight } from "react-icons/hi";
-import { useSettings } from "../../services/setting.context";
-
 const getBillingMessage = (subscription: any) => {
   if (!subscription) return;
   if (!subscription?.isFreeTrial && subscription?.isActive) {
@@ -26,9 +26,9 @@ const getBillingMessage = (subscription: any) => {
   if (!subscription.isActive) {
     return (
       <p className="flex space-x-2">
-        <a href="/billing">
+        <Link href="/billing">
           Your free trial is over click here to upgrade your account
-        </a>{" "}
+        </Link>{" "}
         <HiArrowRight />
       </p>
     );
@@ -51,7 +51,7 @@ const getBillingMessage = (subscription: any) => {
   }
   return (
     <p className="flex space-x-2">
-      <a href="/billing">{message.trim()} Click here to update billing</a>{" "}
+      <Link href="/billing">{message.trim()} Click here to update billing</Link>{" "}
       <HiArrowRight />
     </p>
   );

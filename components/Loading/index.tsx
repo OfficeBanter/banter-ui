@@ -44,7 +44,7 @@ export function useLoading({ name }: UseLoadingProps) {
   return context.setLoading(name);
 }
 
-export default () => {
+const Loading = () => {
   const context = useContext(LoadingContext);
 
   return (
@@ -77,3 +77,5 @@ export default () => {
     </div>
   );
 };
+
+export default Loading;

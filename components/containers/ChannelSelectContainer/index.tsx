@@ -51,8 +51,8 @@ export default function ChannelSelectContainer({
         }
       />
       <p className="text-center whitespace-pre-wrap">
-        Don't see your private channel? Go to the Slack channel you'd like to
-        set up Banter in, type
+        Don&apos;t see your private channel? Go to the Slack channel you&apos;d
+        like to set up Banter in, type
         <strong className="text-lg block pt-4">/invite @BanterBot</strong>
       </p>
       {!!deleteChannel && (
@@ -76,7 +76,7 @@ export default function ChannelSelectContainer({
             </h3>
             <div className="flex justify-center gap-4">
               <Button color="failure" onClick={deleteChannel}>
-                Yes, I'm sure
+                Yes, I&apos;m sure
               </Button>
               <Button
                 color="gray"

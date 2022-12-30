@@ -175,7 +175,7 @@ export default function MessagesContainer({
                   setDeleteMessage(null);
                 }}
               >
-                Yes, I'm sure
+                Yes, I&apos;m sure
               </Button>
               <Button color="gray" onClick={() => setDeleteMessage(null)}>
                 No, cancel

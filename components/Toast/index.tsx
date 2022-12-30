@@ -61,7 +61,7 @@ export function useToast(): ToastContext {
   return context;
 }
 
-export default () => {
+const Toast = () => {
   const context = useContext(ToastContext);
 
   return (
@@ -190,3 +190,5 @@ const Warning = () => (
     <span className="sr-only">Warning icon</span>
   </div>
 );
+
+export default Toast;
