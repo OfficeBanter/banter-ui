@@ -20,7 +20,7 @@ export default function Onboarding({}) {
   const { addToast } = useToast();
   const router = useRouter();
 
-  const { getSettings } = useSettings();
+  const { getSettings, settings } = useSettings();
 
   useEffect(() => {
     const getChannels = async () => {
@@ -77,7 +77,9 @@ export default function Onboarding({}) {
     if (step === -1) {
       setStep(0);
     }
-    if (step > 2) {
+    if (step > 2 && settings?.length === 0) {
+      submit();
+    } else if (step > 2) {
       setIsModalOpen(true);
     }
   }, [step]);

@@ -25,7 +25,6 @@ export default function AuthPage({ message }) {
       <Head>
         <title>Lets Login to Banter</title>
         <meta name="description" content="Login for Banter" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="h-screen">
         <Navbar className="bg-rose-50 rounded-none" fluid={true} rounded={true}>

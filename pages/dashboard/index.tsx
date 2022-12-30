@@ -13,8 +13,8 @@ export default function Dashboard() {
 
   const { settings } = useSettings();
 
-  const showSidebar = settings && settings.length > 0;
-  const layout = showSidebar
+  const showNav = settings && settings.length > 0;
+  const layout = showNav
     ? "grid grid-cols-12 grid-rows-3 auto-rows-min"
     : "grid grid-cols-9 grid-rows-3 auto-rows-min";
 
@@ -27,11 +27,15 @@ export default function Dashboard() {
       </Head>
       <Toast />
       <div
-        style={{ gridTemplateRows: showSidebar ? "64px auto 1fr" : "auto" }}
+        style={{ gridTemplateRows: showNav ? "64px auto 1fr" : "auto" }}
         className={layout}
       >
-        <NavBar />
-        {showSidebar && <Sidebar />}
+        {showNav && (
+          <>
+            <NavBar />
+            <Sidebar />
+          </>
+        )}
         <Onboarding />
       </div>
     </>

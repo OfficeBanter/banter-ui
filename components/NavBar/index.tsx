@@ -42,14 +42,19 @@ const getBillingMessage = (subscription: any) => {
   let message = "";
   if (difference >= 2 && difference <= 30) {
     message = `Your free trial ends on ${subscriptionTrialEndDate.toFormat(
-      "MM DD"
+      "LLL dd"
     )}.`;
   } else if (difference > 1 && difference < 2) {
     message = `Your free trial ends tomorrow.`;
   } else if (difference < 1) {
     message = `It’s not near, it’s here, your Banterbot trial is expiring later today. You can use the discount code to keep the good times rolling. Do you need more time to test out Banter?`;
   }
-  return `${message}`.trim();
+  return (
+    <p className="flex space-x-2">
+      <a href="/billing">{message.trim()} Click here to update billing</a>{" "}
+      <HiArrowRight />
+    </p>
+  );
 };
 
 export default function NavBar({}) {
@@ -105,7 +110,9 @@ export default function NavBar({}) {
           Billing
         </Navbar.Link>
 
-        <Navbar.Link href="https://banter.so/support">Support</Navbar.Link>
+        <Navbar.Link target="_blank" href="https://banter.so/support">
+          Support
+        </Navbar.Link>
         <Dropdown label={`${user.name} (${user.workspace})`} inline={true}>
           <Dropdown.Item
             onClick={() => {

@@ -14,6 +14,7 @@ import "@fontsource/roboto/700.css";
 import Loading, { LoadingProvider } from "../components/Loading";
 import { ToastProvider } from "../components/Toast";
 import { SettingsProvider } from "../services/setting.context";
+import Head from "next/head";
 
 function App({ Component, pageProps }: AppProps) {
   const loadSegment = () => {
@@ -42,6 +43,9 @@ function App({ Component, pageProps }: AppProps) {
         dangerouslySetInnerHTML={{ __html: loadSegment() }}
         id="segmentScript"
       />
+      <Head>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+      </Head>
       {!loading && (
         <DndProvider backend={HTML5Backend}>
           <LoadingProvider>
