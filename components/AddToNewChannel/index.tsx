@@ -5,7 +5,7 @@ import ChannelSelectContainer from "../containers/ChannelSelectContainer";
 import SetTagsContainer from "../containers/SetTagsContainer";
 import TimeSelectContainer from "../containers/TimeSelectContainer";
 import TIMEZONES, { Timezone } from "../Constants/timezones";
-import { DEFAULT_TAGS } from "../Constants/tags.ts";
+import { DEFAULT_TAGS } from "../Constants/tags";
 import DAYS from "../Constants/days";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useLoading } from "../Loading";

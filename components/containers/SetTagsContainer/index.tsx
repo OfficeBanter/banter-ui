@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { TAGS } from "../../Constants/tags.ts";
+import { TAGS } from "../../Constants/tags";
 import { Checkbox, Label, Modal } from "flowbite-react";
 
 export default function SetTagsContainer({
