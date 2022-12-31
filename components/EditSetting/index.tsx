@@ -162,6 +162,7 @@ export default function EditSetting({ channels, setChannels }) {
   };
 
   const editMessage = (message) => {
+    console.log(message);
     setSelectedMessage({
       _id: message._id,
       message: message.customMessage,
@@ -312,18 +313,20 @@ export default function EditSetting({ channels, setChannels }) {
                   </Button>
                 </div>
               )}
-              {isMessageModalOpen && (
-                <MessageModal
-                  saveMessage={saveMessage}
-                  open={isMessageModalOpen}
-                  message={selectedMessage}
-                  setOpen={setIsMessageModalOpen}
-                />
-              )}
             </div>
           </Tabs.Item>
         ))}
       </Tabs.Group>
+
+      {/* We want to reset whats in the modal every time we open it, the easiest way to do that is to remount it everytime */}
+      {isMessageModalOpen && (
+        <MessageModal
+          saveMessage={saveMessage}
+          open={isMessageModalOpen}
+          message={selectedMessage}
+          setOpen={setIsMessageModalOpen}
+        />
+      )}
     </div>
   );
 }

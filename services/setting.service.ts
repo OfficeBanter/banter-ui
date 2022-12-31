@@ -91,11 +91,12 @@ const createNewMessage = async (
 
 const updateMessage = async (
   settingId: string,
-  { message, file, _id }: CreateNewMessage
+  { message, file, _id, deleteImage }: CreateNewMessage
 ) => {
   const formData = new FormData();
 
   if (file) formData.append("file", file);
+  if (deleteImage) formData.append("deleteImage", deleteImage);
   formData.append("message", message);
   const { data } = await axios.put(
     `${process.env.NEXT_PUBLIC_API_URL}/setting/${settingId}/update-message-schedule/${_id}`,

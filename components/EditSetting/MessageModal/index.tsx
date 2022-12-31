@@ -1,12 +1,34 @@
 import * as React from "react";
-import { Modal, Button, Label, Textarea, FileInput } from "flowbite-react";
+import {
+  Modal,
+  Button,
+  Checkbox,
+  Label,
+  Textarea,
+  FileInput,
+} from "flowbite-react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function MessageModal({ open, message, setOpen, saveMessage }) {
-  const handleOpen = () => setOpen(true);
+  console.log(message);
   const handleClose = () => setOpen(false);
+  const [messageEdit, setMessageEdit] = useState({ ...message } || {});
 
-  const [messageEdit, setMessageEdit] = React.useState({ ...message } || {});
-  const [imageURL, setImageURL] = React.useState(message?.customFile?.location);
+  const [imageURL, setImageURL] = useState(message?.customFile?.location);
+
+  const escFunction = useCallback((event) => {
+    if (event.key === "Escape") {
+      setOpen(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", escFunction, false);
+
+    return () => {
+      document.removeEventListener("keydown", escFunction, false);
+    };
+  }, []);
 
   const MAX_IMAGE = 5000000;
   const handleChange = (event) => {
@@ -47,12 +69,12 @@ export default function MessageModal({ open, message, setOpen, saveMessage }) {
   };
 
   return (
-    <div>
-      <Modal className="z-40" show={open} onClose={handleClose}>
-        <Modal.Header>
+    <Modal className="z-40 rounded" show={open} onClose={handleClose}>
+      <div className="max-h-[80vh] rounded">
+        <Modal.Header className="sticky top-0 z-1 bg-white">
           {message ? "Edit Message" : "Create your message"}
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="overflow-y-auto max-h-[60vh]">
           <form className="space-y-6">
             <div id="textarea">
               <div className="mb-2 block">
@@ -67,26 +89,48 @@ export default function MessageModal({ open, message, setOpen, saveMessage }) {
                 rows={4}
               />
             </div>
-
-            <div id="fileUpload">
-              <div className="mb-2 block">
-                <Label htmlFor="file" value="Upload file" />
+            {message && (
+              <div>
+                <Checkbox
+                  id="deleteImage"
+                  checked={message?.deleteImage}
+                  onClick={(e) =>
+                    setMessageEdit({
+                      ...messageEdit,
+                      deleteImage: !messageEdit.deleteImage,
+                    })
+                  }
+                />
+                <Label className="pl-4" htmlFor="deleteImage">
+                  No Image
+                </Label>
               </div>
-              <FileInput
-                className="pb-8"
-                id="file"
-                accept="image/*"
-                helperText={
-                  messageEdit?.file?.size > MAX_IMAGE
-                    ? "File is too large"
-                    : !messageEdit.file
-                    ? "Upload an image for the prompt!"
-                    : ""
-                }
-                onChange={handleChange}
-              />
-              {imageURL && <img src={imageURL} />}
-            </div>
+            )}
+
+            {!messageEdit?.deleteImage && (
+              <div id="fileUpload">
+                <div className="mb-2 block">
+                  <Label
+                    htmlFor="file"
+                    value={message ? "Upload New Image" : "Upload Image"}
+                  />
+                </div>
+                <FileInput
+                  className="pb-8"
+                  id="file"
+                  accept="image/*"
+                  helperText={
+                    messageEdit?.file?.size > MAX_IMAGE
+                      ? "File is too large"
+                      : !messageEdit.file
+                      ? "Upload an image for the prompt!"
+                      : ""
+                  }
+                  onChange={handleChange}
+                />
+                {imageURL && <img src={imageURL} />}
+              </div>
+            )}
           </form>
         </Modal.Body>
         <Modal.Footer>
@@ -97,7 +141,7 @@ export default function MessageModal({ open, message, setOpen, saveMessage }) {
             Save
           </Button>
         </Modal.Footer>
-      </Modal>
-    </div>
+      </div>
+    </Modal>
   );
 }

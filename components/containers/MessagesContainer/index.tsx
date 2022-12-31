@@ -22,6 +22,7 @@ import {
   HiOutlineCamera,
   HiPlusCircle,
   HiOutlineTrash,
+  HiPencil,
 } from "react-icons/hi";
 import { Modal, Badge } from "flowbite-react";
 import { useSettings } from "../../../services/setting.context";
@@ -84,6 +85,7 @@ export default function MessagesContainer({
               </p>
             ))}
           </div>
+          <HiPencil className="text-gray-600 mr-2" />
           <button
             className={`h-10 w-8 flex-none focus:outline-none flex items-center justify-center
                text-white hover:bg-red-100 focus:ring-4
