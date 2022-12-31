@@ -43,9 +43,17 @@ const identifyUser = () => {
 //     }
 //   }
 
-//   trackChannel(data: any): void {
-//     window.analytics.track('channel_selected', data);
-//   }
+const trackChannel = (channelName: string, channelId: string): void => {
+  const user = authService.getUser();
+  if (!user) return;
+
+  const data = {
+    name: user.name,
+    email: user.email,
+    workspace: user.workspace,
+  };
+  window.analytics.track("channel_selected", data);
+};
 
 //   trackTopics(data: any): void {
 //     window.analytics.track('topics_selected', data);
@@ -79,8 +87,17 @@ const trackSignUp = () => {
   window.analytics.track("sign_up", data);
 };
 
+// • Authenticated with Slack
+// • Selected Channel
+// • Selected Topics
+// • Selected Time
+// • Updated settings
+// • Checked out
+// • Logged in
+
 export default Object.freeze({
   identifyUser,
   trackSignIn,
   trackSignUp,
+  trackChannel,
 });

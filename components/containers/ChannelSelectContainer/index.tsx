@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Select from "react-select";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useSettings } from "../../../services/setting.context";
+import segmentService from "../../../services/segment.service";
 
 export default function ChannelSelectContainer({
   slackChannel,
@@ -42,13 +43,14 @@ export default function ChannelSelectContainer({
           channels?.filter(({ value }) => !channelsInUse.has(value)) || []
         }
         value={slackChannel}
-        onChange={(channel) =>
+        onChange={(channel) => {
+          segmentService.trackChannel(channel.label, channel.value);
           setSlackChannel({
             ...channel,
             uniqueId: channel.value,
             name: channel.label,
-          })
-        }
+          });
+        }}
       />
       <p className="text-center whitespace-pre-wrap">
         Don&apos;t see your private channel? Go to the Slack channel you&apos;d
