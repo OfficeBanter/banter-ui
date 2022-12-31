@@ -51,6 +51,8 @@ const trackChannel = (channelName: string, channelId: string): void => {
     name: user.name,
     email: user.email,
     workspace: user.workspace,
+    channelName,
+    channelId,
   };
   window.analytics.track("channel_selected", data);
 };

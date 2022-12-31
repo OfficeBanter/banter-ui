@@ -4,13 +4,8 @@ import authService from "../../services/auth.service";
 import { useRouter } from "next/router";
 import NavBar from "../../components/NavBar";
 import Toast from "../../components/Toast";
-import { useSettings } from "../../services/setting.context";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
 import subscriptionService from "../../services/subscription.service";
-import { HiArrowRight, HiCheck } from "react-icons/hi";
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY); // starts with pk_
+import { HiArrowRight, HiCheck, HiCheckCircle } from "react-icons/hi";
 
 interface SubscriptionCardProps {
   bestValue?: boolean;
@@ -26,30 +21,30 @@ const BasicCard = ({
 }: {
   data: SubscriptionCardProps;
 }) => (
-  <div className="w-96 p-8 bg-white text-center rounded-3xl pr-16 shadow-xl">
+  <div className="w-96 p-8 bg-cyan-50  text-center rounded-3xl pr-16 shadow-xl">
     <h1 className="text-black font-semibold text-2xl">{title}</h1>
     <p className="pt-2 tracking-wide">
-      <span className="text-gray-400 align-top">$ </span>
+      <span className="text-gray-600 align-top">$ </span>
       <span className="text-3xl font-semibold">{price}</span>
-      <span className="text-gray-400 font-medium">/ channel</span>
+      <span className="text-gray-600 font-medium">/ channel</span>
     </p>
     <hr className="mt-4 border-1" />
     <div className="pt-8">
-      <p className="font-semibold text-gray-400 text-left">
-        <HiCheck className="inline ml-2" />
+      <p className="text-left">
+        <HiCheckCircle className="inline ml-2" />
         <span className="pl-2">New icebreakers added weekly </span>
       </p>
-      <p className="font-semibold text-gray-400 text-left pt-5">
-        <HiCheck className="inline ml-2" />
+      <p className="text-left pt-5">
+        <HiCheckCircle className="inline ml-2" />
         <span className="pl-2">Add your own icebreakers</span>
       </p>
-      <p className="font-semibold text-gray-400 text-left pt-5">
-        <HiCheck className="inline ml-2" />
+      <p className="text-left pt-5">
+        <HiCheckCircle className="inline ml-2" />
         <span className="pl-2">Edit & schedule upcoming messages </span>
       </p>
 
       <button onClick={onClick} className="">
-        <p className="w-full py-4 bg-blue-600 mt-8 rounded-xl text-white">
+        <p className="w-full py-4 bg-blue-900 mt-8 rounded-full px-8 text-white">
           <span className="font-medium">Choose Plan</span>
           <HiArrowRight className="inline ml-2" />
         </p>
@@ -63,42 +58,42 @@ const Popular = ({
 }: {
   data: SubscriptionCardProps;
 }) => (
-  <div className="w-96 p-8 bg-gray-900 text-center rounded-3xl text-white border-4 shadow-xl border-white transform scale-125">
-    <h1 className="text-white font-semibold text-2xl">{title}</h1>
+  <div className="w-96 p-8 bg-cyan-50 text-center rounded-3xl border-2 shadow-xl border-blue-900 transform scale-125">
+    <h1 className="font-semibold text-2xl">{title}</h1>
     <p className="pt-2 tracking-wide">
-      <span className="text-gray-400 align-top">$ </span>
+      <span className="text-gray-600 align-top">$ </span>
       <span className="text-3xl font-semibold">{(price / 12).toFixed(2)}</span>
-      <span className="text-gray-400 font-medium">/ channel</span>
+      <span className="text-gray-600 font-medium">/ channel per month</span>
     </p>
     <hr className="mt-4 border-1 border-gray-600" />
     <div className="pt-8">
-      <p className="font-semibold text-gray-400 text-left">
-        <HiCheck className="inline ml-2" />
+      <p className="text-left">
+        <HiCheckCircle className="inline ml-2" />
         <span className="pl-2">20% off!</span>
       </p>
-      <p className="font-semibold text-gray-400 text-left pt-5">
-        <HiCheck className="inline ml-2" />
+      <p className="text-left pt-5">
+        <HiCheckCircle className="inline ml-2" />
         <span className="pl-2">New icebreakers added weekly </span>
       </p>
-      <p className="font-semibold text-gray-400 text-left pt-5">
-        <HiCheck className="inline ml-2" />
+      <p className="text-left pt-5">
+        <HiCheckCircle className="inline ml-2" />
         <span className="pl-2">Add your own icebreakers</span>
       </p>
-      <p className="font-semibold text-gray-400 text-left pt-5">
-        <HiCheck className="inline ml-2" />
+      <p className="text-left pt-5">
+        <HiCheckCircle className="inline ml-2" />
         <span className="pl-2">Edit & schedule upcoming messages </span>
       </p>
 
       <button onClick={onClick} className="">
-        <p className="w-full py-4 bg-blue-600 mt-8 rounded-xl text-white">
-          <span className="font-medium">Choose Plan</span>
+        <p className="w-full py-4 bg-blue-900 mt-8 px-8 rounded-full text-white">
+          <span className="font-medium">Choose This Plan</span>
           <HiArrowRight className="inline ml-2" />
         </p>
       </button>
     </div>
     <div className="absolute top-4 right-4">
-      <p className="bg-blue-700 font-semibold px-4 py-1 rounded-full uppercase text-xs">
-        Popular
+      <p className="bg-blue-900 text-white font-semibold px-4 py-1 rounded-full uppercase text-xs">
+        Best Value
       </p>
     </div>
   </div>
@@ -137,16 +132,18 @@ export default function Dashboard() {
       <Toast />
       <div>
         <NavBar />
-        <div className="">
+        <div className="mt-8">
           <div className="">
             <div className="text-center font-semibold">
               <h1 className="text-5xl">
-                <span className="text-blue-700 tracking-wide">Flexible </span>
-                <span>Plans</span>
+                All you can{" "}
+                <span className="text-blue-900 tracking-wide">Banter.</span>
               </h1>
-              <p className="pt-6 text-xl text-gray-400 font-normal w-full px-8 md:w-full">
-                Choose a plan that works best for you and
-                <br /> your team.
+              <h1 className="text-5xl">One simple price.</h1>
+
+              <p className="pt-6 text-xl text-gray-600 font-normal w-full px-8 md:w-full">
+                Faster and easier than having a person manually send ice
+                breakers in Slack.
               </p>
             </div>
             <div className="flex justify-center pt-20">
