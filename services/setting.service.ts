@@ -40,6 +40,7 @@ const saveSetting = async (setting) => {
     `${process.env.NEXT_PUBLIC_API_URL}/setting/${setting._id}`,
     setting
   );
+  console.log(data);
   return data;
 };
 

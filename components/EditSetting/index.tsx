@@ -109,10 +109,13 @@ export default function EditSetting({ channels, setChannels }) {
         setting: newSetting,
         status,
         message,
+        messages,
       } = await settingService.saveSetting({
         ...setting,
         timezone: setting.timezone._id,
       });
+
+      setMessages(messages);
 
       if (!status) {
         addToast({
@@ -162,7 +165,6 @@ export default function EditSetting({ channels, setChannels }) {
   };
 
   const editMessage = (message) => {
-    console.log(message);
     setSelectedMessage({
       _id: message._id,
       message: message.customMessage,

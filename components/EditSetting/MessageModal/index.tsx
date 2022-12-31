@@ -10,7 +10,6 @@ import {
 import { useCallback, useEffect, useState } from "react";
 
 export default function MessageModal({ open, message, setOpen, saveMessage }) {
-  console.log(message);
   const handleClose = () => setOpen(false);
   const [messageEdit, setMessageEdit] = useState({ ...message } || {});
 
