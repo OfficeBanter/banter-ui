@@ -81,7 +81,7 @@ export default function Onboarding({}) {
     if (step > 2 && settings?.length === 0) {
       submit();
     } else if (step > 2) {
-      segmentService.trackTimeCompleted({ setting });
+      //segmentService.trackTimeCompleted({ setting });
       setIsModalOpen(true);
     }
   }, [step]);
