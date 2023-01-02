@@ -141,7 +141,7 @@ export default function MessagesContainer({
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <div className="divide-y divide-gray-200">
+        <div className="divide-y divide-gray-200 select-none">
           <div
             className={`
         flex flex-row items-center`}
