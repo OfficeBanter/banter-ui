@@ -23,7 +23,7 @@ export function SettingsProvider({ children }) {
       try {
         await getSettings();
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     })();
   }, []);

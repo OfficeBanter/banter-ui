@@ -15,7 +15,6 @@ export default function Dashboard() {
   const showNav = settings && settings.length > 0;
 
   if (router.query.new === undefined && settings?.length) {
-    console.log(router);
     router.push(`/setting/${settings[0]._id}/overview`);
     return;
   }

@@ -96,6 +96,11 @@ export default function NavBar({}) {
       <Navbar.Toggle />
       <Navbar.Collapse>
         <Navbar.Link
+          target={
+            !subscription?.isActive || subscription?.isFreeTrial
+              ? "_self"
+              : "_blank"
+          }
           className={
             subscription?.isActive &&
             !subscription?.isFreeTrial &&

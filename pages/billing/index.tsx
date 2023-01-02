@@ -45,7 +45,7 @@ const BasicCard = ({
 
       <button onClick={onClick} className="">
         <p className="w-full py-4 bg-blue-900 mt-8 rounded-full px-8 text-white">
-          <span className="font-medium">Choose Plan</span>
+          <span className="font-medium">Choose This Plan</span>
           <HiArrowRight className="inline ml-2" />
         </p>
       </button>
@@ -105,13 +105,12 @@ export default function Dashboard() {
 
   const pay = async (pricingId: string) => {
     const data = await subscriptionService.pay(pricingId);
-    window.location = data.paymentURL;
+    window.open(data.paymentURL);
   };
 
   useEffect(() => {
     const getSubscriptions = async () => {
       const subscriptions = await subscriptionService.getProducts();
-      console.log(subscriptions);
       setProducts(
         subscriptions.prices[0].metadata.bestValue === "yes"
           ? [subscriptions.prices[1], subscriptions.prices[0]]
