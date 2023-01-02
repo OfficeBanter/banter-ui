@@ -124,7 +124,7 @@ export default function MessagesContainer({
     <div className="col-span-8">
       <div className="flex flex-row justify-between">
         <h2 className="text-2xl font-bold pb-12 text-gray-900">
-          {`The next ${messages.length} upcoming Banter prompts`}
+          {`The next ${messages.length} upcoming Banter messages`}
         </h2>
         <Button
           disabled={disabled}
@@ -132,7 +132,7 @@ export default function MessagesContainer({
           onClick={createMessage}
         >
           <HiPlusCircle className="mr-2" />
-          Add your own prompt!
+          Add your own message!
         </Button>
       </div>
 

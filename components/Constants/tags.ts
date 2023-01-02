@@ -15,7 +15,7 @@ const TAGS_SANDBOX = [
     name: SHARE_A_PHOTO,
     img: "/assets/img/Selfie_Emoji.png",
     preview: "/assets/img/Share_A_Photo.jpg",
-    description: "Share a photo based on a prompt",
+    description: "Share a photo based on a message",
     _id: "62795d80a0893096df01e1df",
   },
   {
@@ -47,7 +47,7 @@ const TAGS_PROD = [
     name: SHARE_A_PHOTO,
     img: "/assets/img/Selfie_Emoji.png",
     preview: "/assets/img/Share_A_Photo.jpg",
-    description: "Share a photo based on a prompt",
+    description: "Share a photo based on a message",
     _id: "5fc0c54918074b1992264a8e",
   },
   {

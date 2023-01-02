@@ -122,7 +122,7 @@ export default function MessageModal({ open, message, setOpen, saveMessage }) {
                     messageEdit?.file?.size > MAX_IMAGE
                       ? "File is too large"
                       : !messageEdit.file
-                      ? "Upload an image for the prompt!"
+                      ? "Upload an image for the message!"
                       : ""
                   }
                   onChange={handleChange}

@@ -64,7 +64,7 @@ export default function Sidebar({}) {
               <>
                 <hr className="my-8 h-px bg-gray-900 border-0 dark:bg-gray-700" />
                 <li>
-                  <Link href="/dashboard">
+                  <Link href="/dashboard?new">
                     <HiOutlinePlusCircle className="inline" /> Add New Channel
                   </Link>
                 </li>

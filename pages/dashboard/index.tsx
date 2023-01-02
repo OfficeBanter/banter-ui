@@ -10,8 +10,15 @@ import { useSettings } from "../../services/setting.context";
 
 export default function Dashboard() {
   const { settings } = useSettings();
+  const router = useRouter();
 
   const showNav = settings && settings.length > 0;
+
+  if (router.query.new === undefined && settings?.length) {
+    console.log(router);
+    router.push(`/setting/${settings[0]._id}/overview`);
+    return;
+  }
   const layout = showNav
     ? "grid grid-cols-12 grid-rows-3 auto-rows-min"
     : "grid grid-cols-9 grid-rows-3 auto-rows-min";
