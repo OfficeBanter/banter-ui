@@ -111,7 +111,12 @@ export default function Dashboard() {
   useEffect(() => {
     const getSubscriptions = async () => {
       const subscriptions = await subscriptionService.getProducts();
-      setProducts(subscriptions);
+      console.log(subscriptions);
+      setProducts(
+        subscriptions.prices[0].metadata.bestValue === "yes"
+          ? [subscriptions.prices[1], subscriptions.prices[0]]
+          : subscriptions.prices
+      );
     };
 
     getSubscriptions();
@@ -147,7 +152,7 @@ export default function Dashboard() {
               </p>
             </div>
             <div className="flex justify-center pt-20">
-              {products?.prices?.map((product) => {
+              {products?.map((product) => {
                 const standardizedProduct = {
                   bestValue: product.metadata.bestValue === "yes",
                   feature: product.metadata.feature,
