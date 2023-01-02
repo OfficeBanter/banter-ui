@@ -3,6 +3,7 @@ import { JwtService } from "src/app/core/services/jwt.service";
 import { DataService } from "./data.service";
 import { DAYS } from "../constants/days";
 import authService from "./auth.service";
+import { TAGS } from "../components/Constants/tags";
 
 const identifyUser = () => {
   const user = authService.getUser();
@@ -57,9 +58,18 @@ const trackChannel = (channelName: string, channelId: string): void => {
   window.analytics.track("channel_selected", data);
 };
 
-//   trackTopics(data: any): void {
-//     window.analytics.track('topics_selected', data);
-//   }
+const trackTopics = (topics: string[]): void => {
+  const user = authService.getUser();
+  if (!user) return;
+
+  const data = {
+    name: user.name,
+    email: user.email,
+    workspace: user.workspace,
+    topics: topics.map((topic) => TAGS.find((t) => t._id === topic).name),
+  };
+  window.analytics.track("topics_selected", data);
+};
 
 //   trackTriggerTime(data: any): void {
 //     window.analytics.track('time_selected', data);
@@ -89,9 +99,6 @@ const trackSignUp = () => {
   window.analytics.track("sign_up", data);
 };
 
-// • Authenticated with Slack
-// • Selected Channel
-// • Selected Topics
 // • Selected Time
 // • Updated settings
 // • Checked out
@@ -102,4 +109,5 @@ export default Object.freeze({
   trackSignIn,
   trackSignUp,
   trackChannel,
+  trackTopics,
 });

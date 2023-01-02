@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { TAGS } from "../../Constants/tags";
 import { Checkbox, Label, Modal } from "flowbite-react";
+import segmentService from "../../../services/segment.service";
 
 export default function SetTagsContainer({
   tags,
@@ -31,6 +32,7 @@ export default function SetTagsContainer({
       newTags.push(tag);
     }
     setTags(newTags);
+    segmentService.trackTopics(newTags);
   };
 
   const [modalState, setModalState] = useState(null);

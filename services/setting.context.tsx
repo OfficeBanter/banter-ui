@@ -19,7 +19,13 @@ export function SettingsProvider({ children }) {
   };
 
   useEffect(() => {
-    getSettings();
+    (async () => {
+      try {
+        await getSettings();
+      } catch (error) {
+        console.log(error);
+      }
+    })();
   }, []);
 
   const value = {

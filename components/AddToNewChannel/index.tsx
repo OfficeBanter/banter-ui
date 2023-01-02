@@ -13,6 +13,7 @@ import { useToast } from "../Toast";
 import { useRouter } from "next/router";
 import { DateTime } from "luxon";
 import { useSettings } from "../../services/setting.context";
+import segmentService from "../../services/segment.service";
 
 export default function Onboarding({}) {
   const [channels, setChannels] = useState(null);
@@ -80,6 +81,7 @@ export default function Onboarding({}) {
     if (step > 2 && settings?.length === 0) {
       submit();
     } else if (step > 2) {
+      segmentService.trackTimeCompleted({ setting });
       setIsModalOpen(true);
     }
   }, [step]);
