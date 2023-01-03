@@ -61,6 +61,7 @@ export default function EditSetting({ channels, setChannels }) {
     dropIndex: number,
     messageId: string
   ) => {
+    if (!subscritionIsActive) return;
     const setOrder = async () => {
       setLoading(true);
       try {

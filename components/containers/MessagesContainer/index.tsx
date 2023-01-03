@@ -43,7 +43,7 @@ export default function MessagesContainer({
     return (
       <Message
         key={message._id}
-        disabled={disabled}
+        // disabled={disabled}
         className="flex flex-1"
         id={message._id}
       >
