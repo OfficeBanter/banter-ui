@@ -71,7 +71,12 @@ export default function EditSetting({ channels, setChannels }) {
           messageId
         );
         setMessages(data.messages);
-      } catch (error) {}
+        addToast({ type: "success", message: "Message order saved" });
+      } catch (error) {
+        console.error(error);
+
+        addToast({ type: "error", message: error?.message });
+      }
 
       setLoading(false);
     };

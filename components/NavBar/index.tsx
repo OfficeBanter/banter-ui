@@ -104,7 +104,7 @@ export default function NavBar({}) {
           className={
             subscription?.isActive &&
             !subscription?.isFreeTrial &&
-            subscription.user !== user.id &&
+            subscription.stripeCustomerId !== user.stripeCustomerId &&
             "hidden"
           }
           href={
