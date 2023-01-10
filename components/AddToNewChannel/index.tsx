@@ -84,7 +84,7 @@ export default function Onboarding({}) {
     if (step === -1) {
       setStep(0);
     }
-    if (step > 2 && settings?.length === 0) {
+    if (step > 2 && !settings?.length) {
       submit();
     } else if (step > 2) {
       setIsModalOpen(true);

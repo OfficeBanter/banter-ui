@@ -18,12 +18,13 @@ export default function AuthPage({ message }) {
   const router = useRouter();
 
   useEffect(() => {
+    if (router.query.success === "true") {
+      segmentService.track("checked_out");
+    }
+
     if (!authService.getUser()) {
       router.replace("/");
       return;
-    }
-    if (router.query.success === "true") {
-      segmentService.track("checked_out");
     }
   }, []);
 
