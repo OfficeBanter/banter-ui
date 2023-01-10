@@ -21,7 +21,7 @@ export default function SigninRedirect() {
         return;
       }
       await getSettings();
-      segmentService.trackSignIn();
+      segmentService.track("log_in");
 
       router.push("/dashboard");
     };

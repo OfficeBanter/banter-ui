@@ -54,22 +54,28 @@ export default function Onboarding({}) {
   });
 
   const setDay = (day: string) => {
+    segmentService.track("selected_time");
     setSetting({ ...setting, day });
   };
 
   const setTime = (time: string) => {
+    segmentService.track("selected_time");
     setSetting({ ...setting, time });
   };
 
   const setTimezone = (timezone: Timezone) => {
+    segmentService.track("selected_time");
     setSetting({ ...setting, timezone });
   };
 
   const setTags = (tags: string[]) => {
+    segmentService.track("selected_topics");
+
     setSetting({ ...setting, tags });
   };
 
   const setSlackChannel = (channel) => {
+    segmentService.track("selected_channel");
     setSetting({ ...setting, channel });
   };
 
@@ -78,10 +84,9 @@ export default function Onboarding({}) {
     if (step === -1) {
       setStep(0);
     }
-    if (step > 2 && settings?.length === 0) {
+    if (step > 2 && !settings?.length) {
       submit();
     } else if (step > 2) {
-      //segmentService.trackTimeCompleted({ setting });
       setIsModalOpen(true);
     }
   }, [step]);
@@ -103,7 +108,7 @@ export default function Onboarding({}) {
       if (!status) {
         throw new Error(message);
       }
-
+      segmentService.track("created_settings");
       addToast({
         type: "success",
         message: "New Banter Created!",

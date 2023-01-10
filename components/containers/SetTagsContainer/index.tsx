@@ -32,7 +32,6 @@ export default function SetTagsContainer({
       newTags.push(tag);
     }
     setTags(newTags);
-    segmentService.trackTopics(newTags);
   };
 
   const [modalState, setModalState] = useState(null);

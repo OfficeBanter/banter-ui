@@ -6,6 +6,7 @@ import NavBar from "../../components/NavBar";
 import Toast from "../../components/Toast";
 import subscriptionService from "../../services/subscription.service";
 import { HiArrowRight, HiCheck, HiCheckCircle } from "react-icons/hi";
+import segmentService from "../../services/segment.service";
 
 interface SubscriptionCardProps {
   bestValue?: boolean;
@@ -124,6 +125,7 @@ export default function Dashboard() {
       router.replace("/");
       return;
     }
+    segmentService.track("viewed_billing");
   }, []);
 
   return (

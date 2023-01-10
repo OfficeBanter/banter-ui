@@ -13,6 +13,7 @@ import { Button } from "flowbite-react";
 import { Timezone } from "../Constants/timezones";
 import { useSettings } from "../../services/setting.context";
 import DAYS from "../Constants/days";
+import segmentService from "../../services/segment.service";
 
 export default function EditSetting({ channels, setChannels }) {
   const router = useRouter();
@@ -85,22 +86,28 @@ export default function EditSetting({ channels, setChannels }) {
   };
 
   const setDay = (day: string) => {
+    segmentService.track("selected_time");
     setSetting({ ...setting, day });
   };
 
   const setTime = (time: string) => {
+    segmentService.track("selected_time");
     setSetting({ ...setting, time });
   };
 
   const setTimezone = (timezone: Timezone) => {
+    segmentService.track("selected_time");
     setSetting({ ...setting, timezone });
   };
 
   const setTags = (tags: string[]) => {
+    segmentService.track("selected_topics");
+
     setSetting({ ...setting, tags });
   };
 
   const setSlackChannel = (channel) => {
+    segmentService.track("selected_channel");
     setSetting({ ...setting, channel });
   };
 
@@ -129,6 +136,7 @@ export default function EditSetting({ channels, setChannels }) {
           message: message,
         });
       } else {
+        segmentService.track("updated_settings");
         setSetting({
           ...newSetting,
           tags: newSetting.tags,

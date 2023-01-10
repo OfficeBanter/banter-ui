@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Select from "react-select";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useSettings } from "../../../services/setting.context";
-import segmentService from "../../../services/segment.service";
 
 export default function ChannelSelectContainer({
   slackChannel,
@@ -44,7 +43,6 @@ export default function ChannelSelectContainer({
         }
         value={slackChannel}
         onChange={(channel) => {
-          segmentService.trackChannel(channel.label, channel.value);
           setSlackChannel({
             ...channel,
             uniqueId: channel.value,
