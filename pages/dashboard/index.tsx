@@ -15,7 +15,10 @@ export default function Dashboard() {
   const showNav = settings && settings.length > 0;
 
   if (router.query.new === undefined && settings?.length) {
-    router.push(`/setting/${settings[0]._id}/overview`);
+    router.replace({
+      pathname: `/setting/${settings[0]._id}/overview`,
+      query: router.query,
+    });
     return;
   }
   const layout = showNav

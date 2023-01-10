@@ -86,13 +86,14 @@ export default function NavBar({}) {
       fluid={true}
       rounded={true}
     >
-      <Navbar.Brand href="/">
+      <Link href="/dashboard">
         <img
           src="/Banter_Logo.svg"
           className="mr-3 h-10 md:h-12"
           alt="Banter Logo"
         />
-      </Navbar.Brand>
+      </Link>
+
       <Navbar.Toggle />
       <Navbar.Collapse>
         <Navbar.Link

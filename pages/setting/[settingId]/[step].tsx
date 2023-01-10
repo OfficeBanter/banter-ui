@@ -7,6 +7,12 @@ import Sidebar from "../../../components/Sidebar";
 import EditSetting from "../../../components/EditSetting";
 import settingService from "../../../services/setting.service";
 import Toast from "../../../components/Toast";
+import { Button, Modal } from "flowbite-react";
+import {
+  HiOutlineCheckCircle,
+  HiOutlineExclamationCircle,
+} from "react-icons/hi";
+import segmentService from "../../../services/segment.service";
 
 export default function AuthPage({ message }) {
   const router = useRouter();
@@ -14,6 +20,10 @@ export default function AuthPage({ message }) {
   useEffect(() => {
     if (!authService.getUser()) {
       router.replace("/");
+      return;
+    }
+    if (router.query.success === "true") {
+      segmentService.track("checked_out");
     }
   }, []);
 
@@ -32,6 +42,15 @@ export default function AuthPage({ message }) {
     getChannels();
   }, []);
 
+  const removeSuccess = () => {
+    const query = { ...router.query };
+    delete query.success;
+    router.replace({
+      pathname: router.pathname,
+      query,
+    });
+  };
+
   return (
     <>
       <Head>
@@ -48,6 +67,21 @@ export default function AuthPage({ message }) {
         <Sidebar />
         <EditSetting channels={channels} setChannels={setChannels} />
       </div>
+      <Modal show={router.query.success === "true"} onClose={removeSuccess}>
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineCheckCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400 whitespace-pre-wrap">
+              {`Your subscription has been created successfully. Lets get Bantering!.`}
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="success" onClick={removeSuccess}>
+                Woo!
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </>
   );
 }
