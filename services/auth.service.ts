@@ -49,7 +49,6 @@ const addSlackWorkspace = async (code: string) => {
   );
   if (data.status) {
     setToken(data.token);
-    // this.segmentService.identifyUser();
   }
 
   return data;
@@ -63,7 +62,6 @@ const signinToSlackWorkspace = async (code: string) => {
 
   if (data.status) {
     setToken(data.token);
-    // this.segmentService.identifyUser();
   }
 
   return data;

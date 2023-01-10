@@ -17,7 +17,7 @@ export default function SigninRedirect() {
         setMessage(data.error);
         return;
       }
-      segmentService.trackSignUp();
+      segmentService.track("sign_up");
       router.push("/dashboard");
     };
     setAuth();
