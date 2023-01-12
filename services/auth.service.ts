@@ -76,6 +76,7 @@ interface User {
   stripeCustomerId: string;
   teamId: string;
   workspace: string;
+  workspaceId: string;
 }
 
 const getUser = (): User | null => {

@@ -54,28 +54,22 @@ export default function Onboarding({}) {
   });
 
   const setDay = (day: string) => {
-    segmentService.track("selected_time");
     setSetting({ ...setting, day });
   };
 
   const setTime = (time: string) => {
-    segmentService.track("selected_time");
     setSetting({ ...setting, time });
   };
 
   const setTimezone = (timezone: Timezone) => {
-    segmentService.track("selected_time");
     setSetting({ ...setting, timezone });
   };
 
   const setTags = (tags: string[]) => {
-    segmentService.track("selected_topics");
-
     setSetting({ ...setting, tags });
   };
 
   const setSlackChannel = (channel) => {
-    segmentService.track("selected_channel");
     setSetting({ ...setting, channel });
   };
 

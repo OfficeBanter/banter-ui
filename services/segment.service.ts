@@ -18,6 +18,7 @@ const track = (event_name: SegmentEventName, additionalData?: any) => {
     name: user.name,
     email: user.email,
     workspace: user.workspace,
+    workspaceId: user.workspaceId,
     ...(additionalData || {}),
   };
   window.analytics.track(event_name, data);
