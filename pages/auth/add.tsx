@@ -18,7 +18,7 @@ export default function SigninRedirect() {
         return;
       }
       segmentService.track("sign_up");
-      router.push("/dashboard");
+      router.reload();
     };
     setAuth();
   }, [router.query.code]);
