@@ -23,7 +23,7 @@ export default function SigninRedirect() {
       await getSettings();
       segmentService.track("log_in");
 
-      router.push("/dashboard");
+      router.reload();
     };
     setAuth();
   }, [router.query.code]);

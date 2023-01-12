@@ -18,6 +18,8 @@ import Head from "next/head";
 import { LDProvider } from "launchdarkly-react-client-sdk";
 
 function App({ Component, pageProps }: AppProps) {
+  const [user, setUser] = useState(null);
+
   const loadSegment = () => {
     const options = {
       apiKey: process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY,
@@ -32,12 +34,35 @@ function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   useEffect(() => {
+    const user = authService.getUser();
+    if (user) setUser(user);
     if (!router.pathname.includes("auth") && !authService.getUser()) {
       router.push("/");
     }
     setLoading(false);
   }, []);
 
+  const shouldLDWrap = (child) => {
+    if (user)
+      return (
+        <LDProvider
+          clientSideID={
+            process.env.NEXT_PUBLIC_LAUNCHDARKLY_SDK_CLIENT_SIDE_ID!
+          }
+          options={{
+            streaming: true,
+          }}
+          context={{
+            key: user?.id,
+            ...(user || {}),
+          }}
+          deferInitialization={true}
+        >
+          {child}
+        </LDProvider>
+      );
+    return child;
+  };
   return (
     <>
       <Script
@@ -48,26 +73,24 @@ function App({ Component, pageProps }: AppProps) {
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </Head>
       {!loading && (
-        <LDProvider
-          clientSideID={
-            process.env.NEXT_PUBLIC_LAUNCHDARKLY_SDK_CLIENT_SIDE_ID!
-          }
-        >
+        <>
           {/* ^^^^^^^^^^^
             Loading provider must be outside of the settings provider
             because the settings provider uses the loading provider to
             get the launch darkly user. */}
-          <DndProvider backend={HTML5Backend}>
-            <LoadingProvider>
-              <ToastProvider>
-                <SettingsProvider>
-                  <Component {...pageProps} />
-                  <Loading />
-                </SettingsProvider>
-              </ToastProvider>
-            </LoadingProvider>
-          </DndProvider>
-        </LDProvider>
+          {shouldLDWrap(
+            <DndProvider backend={HTML5Backend}>
+              <LoadingProvider>
+                <ToastProvider>
+                  <SettingsProvider>
+                    <Component {...pageProps} />
+                    <Loading />
+                  </SettingsProvider>
+                </ToastProvider>
+              </LoadingProvider>
+            </DndProvider>
+          )}
+        </>
       )}
     </>
   );
