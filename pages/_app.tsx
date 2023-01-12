@@ -32,7 +32,6 @@ function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   useEffect(() => {
-    authService.init();
     if (!router.pathname.includes("auth") && !authService.getUser()) {
       router.push("/");
     }
