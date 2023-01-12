@@ -30,7 +30,6 @@ export default function AuthPage({ message }) {
       return;
     }
     const getChannels = async () => {
-      authService.init();
       const channels = await settingService.getChannels();
       setChannels(
         channels.map(({ uniqueId, name, isPrivate, ...rest }) => ({
