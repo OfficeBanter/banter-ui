@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const VERSION = "v1";
+
 // decode jwt token
 const decodeToken = (token: string) => {
   const base64Url = token.split(".")[1];
@@ -91,6 +93,13 @@ const getToken = (): string => {
 };
 
 const init = () => {
+  if (window?.localStorage?.getItem("banter_version") !== VERSION) {
+    // logout user
+    window?.localStorage?.getItem("banter_version");
+    window?.localStorage?.setItem("banter_version", VERSION);
+    logoutUser();
+    return;
+  }
   const token = getToken();
   axios.defaults.headers.common = {
     Authorization: `Bearer ${token}`,

@@ -24,7 +24,6 @@ export function SettingsProvider({ children }) {
   const client = useLDClient();
 
   useEffect(() => {
-    authService.init();
     const user = authService.getUser();
 
     if (!user) return;
