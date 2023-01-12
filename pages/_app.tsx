@@ -18,6 +18,8 @@ import Head from "next/head";
 import { LDProvider } from "launchdarkly-react-client-sdk";
 
 function App({ Component, pageProps }: AppProps) {
+  const [user, setUser] = useState(null);
+
   const loadSegment = () => {
     const options = {
       apiKey: process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY,
@@ -32,12 +34,13 @@ function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   useEffect(() => {
+    authService.init();
+    setUser(authService.getUser());
     if (!router.pathname.includes("auth") && !authService.getUser()) {
       router.push("/");
     }
     setLoading(false);
   }, []);
-
   return (
     <>
       <Script
@@ -52,6 +55,14 @@ function App({ Component, pageProps }: AppProps) {
           clientSideID={
             process.env.NEXT_PUBLIC_LAUNCHDARKLY_SDK_CLIENT_SIDE_ID!
           }
+          options={{
+            streaming: true,
+          }}
+          context={{
+            key: user?.id,
+            ...user,
+          }}
+          deferInitialization={true}
         >
           {/* ^^^^^^^^^^^
             Loading provider must be outside of the settings provider
