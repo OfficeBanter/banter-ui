@@ -1,4 +1,6 @@
+import { useLDClient } from "launchdarkly-react-client-sdk";
 import { createContext, useContext, useEffect, useState } from "react";
+import authService from "./auth.service";
 import settingService from "./setting.service";
 interface SettingsContext {
   settings: SettingType[] | null;
@@ -7,6 +9,7 @@ interface SettingsContext {
 const SettingsContext = createContext<SettingsContext | null>(null);
 
 interface SettingType {}
+
 export function SettingsProvider({ children }) {
   const [settings, setSettings] = useState<SettingType[] | null>(null);
   const [subscription, setSubscription] = useState<SettingType[] | null>(null);
@@ -17,6 +20,19 @@ export function SettingsProvider({ children }) {
     setSettings(settings);
     setSubscription(subscription);
   };
+
+  const client = useLDClient();
+
+  useEffect(() => {
+    authService.init();
+    const user = authService.getUser();
+
+    if (!user) return;
+    client?.identify({
+      key: user?.id,
+      ...user,
+    });
+  }, []);
 
   useEffect(() => {
     (async () => {

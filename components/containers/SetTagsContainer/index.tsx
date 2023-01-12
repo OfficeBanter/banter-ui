@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { TAGS, TEAM_AWARDS } from "../../Constants/tags";
 import { Checkbox, Label, Modal } from "flowbite-react";
-import { useFlags, useLDClient } from "launchdarkly-react-client-sdk";
-import authService from "../../../services/auth.service";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 export default function SetTagsContainer({
   tags,
@@ -16,20 +15,6 @@ export default function SetTagsContainer({
   const flags = useFlags();
   console.log(flags, flags.teamAwards);
 
-  const client = useLDClient();
-  useEffect(() => {
-    const user = authService.getUser();
-
-    if (user) {
-      console.log(user);
-      client?.identify({
-        key: user.id,
-        context: {
-          ...user,
-        },
-      });
-    }
-  }, [authService.getUser()]);
   const escFunction = useCallback((event) => {
     if (event.key === "Escape") {
       setModalState(null);
