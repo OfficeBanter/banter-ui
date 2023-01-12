@@ -54,39 +54,43 @@ export default function Onboarding({}) {
   });
 
   const setDay = (day: string) => {
-    segmentService.track("selected_time");
     setSetting({ ...setting, day });
   };
 
   const setTime = (time: string) => {
-    segmentService.track("selected_time");
     setSetting({ ...setting, time });
   };
 
   const setTimezone = (timezone: Timezone) => {
-    segmentService.track("selected_time");
     setSetting({ ...setting, timezone });
   };
 
   const setTags = (tags: string[]) => {
-    segmentService.track("selected_topics");
-
     setSetting({ ...setting, tags });
   };
 
   const setSlackChannel = (channel) => {
-    segmentService.track("selected_channel");
     setSetting({ ...setting, channel });
   };
 
   const [step, setStep] = useState(0);
   useEffect(() => {
+    if (step === 1) {
+      segmentService.track("selected_channel");
+    }
+
+    if (step === 2) {
+      segmentService.track("selected_topics");
+    }
+
     if (step === -1) {
       setStep(0);
     }
     if (step > 2 && !settings?.length) {
+      segmentService.track("selected_time");
       submit();
     } else if (step > 2) {
+      segmentService.track("selected_time");
       setIsModalOpen(true);
     }
   }, [step]);
