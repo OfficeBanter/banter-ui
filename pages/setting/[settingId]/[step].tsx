@@ -23,16 +23,14 @@ export default function AuthPage({ message }) {
     }
   }, [router?.query?.success]);
 
+  const [channels, setChannels] = useState(null);
   useEffect(() => {
     if (!authService.getUser()) {
       router.replace("/");
       return;
     }
-  }, []);
-
-  const [channels, setChannels] = useState(null);
-  useEffect(() => {
     const getChannels = async () => {
+      authService.init();
       const channels = await settingService.getChannels();
       setChannels(
         channels.map(({ uniqueId, name, isPrivate, ...rest }) => ({
