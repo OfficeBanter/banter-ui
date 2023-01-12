@@ -13,7 +13,6 @@ export default function SetTagsContainer({
   disabled?: boolean;
 }) {
   const flags = useFlags();
-  console.log(flags, flags.teamAwards);
 
   const escFunction = useCallback((event) => {
     if (event.key === "Escape") {
