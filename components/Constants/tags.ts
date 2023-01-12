@@ -2,6 +2,7 @@ const GETTING_TO_KNOW_YOU = "Getting to know you";
 const SHARE_A_PHOTO = "Share a photo";
 const OPINIONS_AND_DEBATES = "Opinions and Debate";
 const BRAIN_TEASERS = "Brain Teasers";
+export const TEAM_AWARDS = "Team Awards";
 
 const TAGS_SANDBOX = [
   {
@@ -67,7 +68,17 @@ const TAGS_PROD = [
   },
 ];
 
-export const TAGS =
-  process.env.NODE_ENV === "production" ? TAGS_PROD : TAGS_SANDBOX;
+export const TAGS = [
+  ...(process.env.NODE_ENV === "production" ? TAGS_PROD : TAGS_SANDBOX),
+  {
+    name: TEAM_AWARDS,
+    new: true,
+    img: "/assets/img/Trophy_Emoji.png",
+    preview: "/assets/img/Team_Awards.png",
+    description:
+      "Gas your team members up with a poll about their achievements",
+    _id: "63bcf95691f9d322b8a1ba55",
+  },
+];
 
 export const DEFAULT_TAGS = TAGS.map((tag) => tag._id);

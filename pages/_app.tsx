@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ComponentType } from "react";
 import "./globalStyles.css";
 import type { AppProps } from "next/app";
 import Script from "next/script";
 import * as snippet from "@segment/snippet";
 import authService from "../services/auth.service";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import "@fontsource/roboto/300.css";
@@ -15,6 +15,7 @@ import Loading, { LoadingProvider } from "../components/Loading";
 import { ToastProvider } from "../components/Toast";
 import { SettingsProvider } from "../services/setting.context";
 import Head from "next/head";
+import { LDProvider } from "launchdarkly-react-client-sdk";
 
 function App({ Component, pageProps }: AppProps) {
   const loadSegment = () => {
@@ -29,8 +30,8 @@ function App({ Component, pageProps }: AppProps) {
   };
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
   useEffect(() => {
-    authService.init();
     if (!router.pathname.includes("auth") && !authService.getUser()) {
       router.push("/");
     }
@@ -47,16 +48,26 @@ function App({ Component, pageProps }: AppProps) {
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </Head>
       {!loading && (
-        <DndProvider backend={HTML5Backend}>
-          <LoadingProvider>
-            <ToastProvider>
-              <SettingsProvider>
-                <Component {...pageProps} />
-                <Loading />
-              </SettingsProvider>
-            </ToastProvider>
-          </LoadingProvider>
-        </DndProvider>
+        <LDProvider
+          clientSideID={
+            process.env.NEXT_PUBLIC_LAUNCHDARKLY_SDK_CLIENT_SIDE_ID!
+          }
+        >
+          {/* ^^^^^^^^^^^
+            Loading provider must be outside of the settings provider
+            because the settings provider uses the loading provider to
+            get the launch darkly user. */}
+          <DndProvider backend={HTML5Backend}>
+            <LoadingProvider>
+              <ToastProvider>
+                <SettingsProvider>
+                  <Component {...pageProps} />
+                  <Loading />
+                </SettingsProvider>
+              </ToastProvider>
+            </LoadingProvider>
+          </DndProvider>
+        </LDProvider>
       )}
     </>
   );
