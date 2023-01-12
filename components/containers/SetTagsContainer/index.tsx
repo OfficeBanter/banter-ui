@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { TAGS } from "../../Constants/tags";
+import { TAGS, TEAM_AWARDS } from "../../Constants/tags";
 import { Checkbox, Label, Modal } from "flowbite-react";
-import segmentService from "../../../services/segment.service";
+import { useFlags, useLDClient } from "launchdarkly-react-client-sdk";
+import authService from "../../../services/auth.service";
 
 export default function SetTagsContainer({
   tags,
@@ -12,6 +13,23 @@ export default function SetTagsContainer({
   setTags: (tags: string[]) => void;
   disabled?: boolean;
 }) {
+  const flags = useFlags();
+  console.log(flags, flags.teamAwards);
+
+  const client = useLDClient();
+  useEffect(() => {
+    const user = authService.getUser();
+
+    if (user) {
+      console.log(user);
+      client?.identify({
+        key: user.id,
+        context: {
+          ...user,
+        },
+      });
+    }
+  }, [authService.getUser()]);
   const escFunction = useCallback((event) => {
     if (event.key === "Escape") {
       setModalState(null);
@@ -52,7 +70,9 @@ export default function SetTagsContainer({
       <p className="text-m text-center">
         Banter works best when all topics are enabled.
       </p>
-      {TAGS.map((tag) => {
+      {TAGS.filter((tag) => {
+        return flags.teamAwards || tag.name !== TEAM_AWARDS;
+      }).map((tag) => {
         return (
           <React.Fragment key={tag._id}>
             <div className="flex items-center gap-2 disabled:">
