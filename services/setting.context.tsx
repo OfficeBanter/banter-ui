@@ -27,6 +27,7 @@ export function SettingsProvider({ children }) {
     const user = authService.getUser();
 
     if (!user) return;
+    console.log("identify", user);
     client?.identify({
       key: user?.id,
       ...user,

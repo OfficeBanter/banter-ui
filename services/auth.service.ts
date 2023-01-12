@@ -113,6 +113,7 @@ const setToken = (token: string) => {
 
 const logoutUser = () => {
   localStorage.removeItem("token");
+  // @ts-ignore
   window.location = "/";
 };
 
