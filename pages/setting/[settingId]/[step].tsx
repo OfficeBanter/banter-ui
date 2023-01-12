@@ -21,7 +21,9 @@ export default function AuthPage({ message }) {
     if (router.query.success === "true") {
       segmentService.track("checked_out");
     }
+  }, [router?.query?.success]);
 
+  useEffect(() => {
     if (!authService.getUser()) {
       router.replace("/");
       return;
